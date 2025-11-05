@@ -55,12 +55,14 @@ return function(M)
     M.name = M.name or name
     M.version = M.version or version
 
-    if not M.name then
-        LmodError("Module name could not be determined! Set M.name explicitly or fix modulefile path.")
-    end
+    if mode() == "load" then
+        if not M.name then
+            LmodError("Module name could not be determined! Set M.name explicitly or fix modulefile path.")
+        end
 
-    if not M.version then
-        LmodError("Module version could not be determined! Set M.version explicitly or fix modulefile path.")
+        if not M.version then
+            LmodError("Module version could not be determined! Set M.version explicitly or fix modulefile path.")
+        end
     end
 
     -- Determine base install path
@@ -68,14 +70,16 @@ return function(M)
         (module_path:match("/software/el9/modulefiles/") and pathJoin("/software/el9/apps", M.name, M.version)) or
         (module_path:match("/reference/containers/modulefiles/") and pathJoin("/reference/containers", M.name, M.version))
 
-    if not M.base then
-        LmodError("Installation directory could not be determined! Set M.base explicitly or fix modulefile path.")
-    elseif not isDir(M.base) then
-        LmodError("Installation directory does not exist: " .. M.base)
+    if mode() == "load" then
+        if not M.base then
+            LmodError("Installation directory could not be determined! Set M.base explicitly or fix modulefile path.")
+        elseif not isDir(M.base) then
+            LmodError(("Installation directory does not exist: %s"):format(M.base))
+        end
     end
 
     -- Prepend standard subdirectories if they exist
-    if M.base then
+    if mode() == "load" and M.base then
         local dir_env_map = {
             bin = {"PATH"},
             include = {"CPATH", "CMAKE_INCLUDE_PATH"},
@@ -97,7 +101,7 @@ return function(M)
     end
 
     -- Add custom paths if provided
-    if M.prepend_paths then
+    if mode() == "load" and M.prepend_paths then
         for var, value in pairs(M.prepend_paths) do
             if isDir(value) then
                 prepend_path(var, value)
@@ -108,14 +112,14 @@ return function(M)
     end
 
     -- Set any module-specific environment variables
-    if M.env_vars then
+    if mode() == "load" and M.env_vars then
         for var, value in pairs(M.env_vars) do
             setenv(var, value)
         end
     end
 
     -- Set any module-specific conflicts
-    if M.conflicts then
+    if mode() == "load" and M.conflicts then
         for _, module in ipairs(M.conflicts) do
             conflict(module)
         end
@@ -148,7 +152,7 @@ return function(M)
     end
 
     -- Create shell functions for containers
-    if M.shell_functions then
+    if mode() == "load" and M.shell_functions then
         if not isloaded("apptainer") then
             depends_on("apptainer")
         end
