@@ -149,6 +149,14 @@ return function(M)
 
     -- Create shell functions for containers
     if M.shell_functions then
+        if not isloaded("apptainer") then
+            depends_on("apptainer")
+        end
+
+        if not isloaded("apptainer") then
+            LmodError("Required module 'apptainer' could not be loaded; cannot create container shell functions")
+        end
+
         local containers_dir = os.getenv("CONTAINERS") or LmodError("Environment variable CONTAINERS is not set; cannot find container files")
         for _, cmd in ipairs(M.shell_functions) do
             local path = pathJoin(containers_dir, M.name, M.version, cmd .. "-" .. M.version .. ".sif")
