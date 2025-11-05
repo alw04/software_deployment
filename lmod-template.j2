@@ -1,0 +1,77 @@
+local modulefile_template = loadfile("{{ modulefile_template_path }}")()
+
+{% if load is defined %}
+{% for module in load %}
+load("{{ module }}")
+{% endfor -%}
+{% endif -%}
+
+modulefile_template({
+  {% if name is defined %}
+  name = "{{ name }}",
+  {% endif -%}
+  {% if version is defined %}
+  version = "{{ version }}",
+  {% endif -%}
+  {% if base is defined %}
+  base = "{{ base }}",
+  {% endif -%}
+  {% if description is defined %}
+  description = "{{ description }}",
+  {% endif -%}
+  {% if usage_notes is defined %}
+  usage_notes = "{{ usage_notes }}",
+  {% endif -%}
+  {% if libraries_used is defined %}
+  libraries_used = "{{ libraries_used }}",
+  {% endif -%}
+  {% if packages_used is defined %}
+  packages_used = "{{ packages_used }}",
+  {% endif -%}
+  {% if optional_packages is defined %}
+  optional_packages = "{{ optional_packages }}",
+  {% endif -%}
+  {% if testing is defined %}
+  testing = "{{ testing }}",
+  {% endif -%}
+  {% if website is defined %}
+  website = "{{ website }}",
+  {% endif -%}
+  {% if source is defined %}
+  source = "{{ source }}",
+  {% endif -%}
+  {% if built_by is defined %}
+  built_by = "{{ built_by }}",
+  {% endif -%}
+  {% if build_date is defined %}
+  build_date = "{{ build_date }}",
+  {% endif -%}
+  {% if prepend_paths is defined %}
+  prepend_paths = {
+    {% for key, value in prepend_paths.items() %}
+    {{ key }} = "{{ value }}"{% if not loop.last %},{% endif -%}
+    {% endfor -%}
+  },
+  {% endif -%}
+  {% if env_vars is defined %}
+  env_vars = {
+    {% for key, value in env_vars.items() %}
+    {{ key }} = "{{ value }}"{% if not loop.last %},{% endif -%}
+    {% endfor -%}
+  },
+  {% endif -%}
+  {% if shell_functions is defined %}
+  shell_functions = {
+    {% for func in shell_functions %}
+    "{{ func }}"{% if not loop.last %},{% endif -%}
+    {% endfor -%}
+  },
+  {% endif -%}
+  {% if conflicts is defined %}
+  conflicts = {
+    {% for module in conflicts %}
+    "{{ module }}"{% if not loop.last %},{% endif -%}
+    {% endfor -%}
+  },
+  {% endif -%}
+})
