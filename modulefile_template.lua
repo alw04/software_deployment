@@ -15,6 +15,7 @@ return function(M)
         source = nil,
         built_by = "unknown",
         build_date = "unknown",
+        prepend_paths = {},
         env_vars = {},
         -- load_modules = {},
         shell_functions = {},
@@ -84,6 +85,13 @@ return function(M)
                     prepend_path(var, full_path)
                 end
             end
+        end
+    end
+
+    -- Add custom paths if provided
+    if M.prepend_paths then
+        for var, value in pairs(M.prepend_paths) do
+            prepend_path(var, value)
         end
     end
 
