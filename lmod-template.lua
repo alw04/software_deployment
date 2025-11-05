@@ -149,11 +149,12 @@ return function(M)
 
     -- Create shell functions for containers
     if M.shell_functions then
+        local containers_dir = os.getenv("CONTAINERS") or LmodError("Environment variable CONTAINERS is not set; cannot find container files")
         for _, cmd in ipairs(M.shell_functions) do
-            local path = pathJoin("$CONTAINERS", M.name, M.version, cmd .. "-" .. M.version .. ".sif")
+            local path = pathJoin(containers_dir, M.name, M.version, cmd .. "-" .. M.version .. ".sif")
             if isFile(path) then
-                local bash_cmd = 'singularity exec ' .. path .. ' ' .. cmd .. ' "$@"'
-                local csh_cmd = 'singularity exec ' .. path .. ' ' .. cmd .. ' $*'
+                local bash_cmd = ('singularity exec %s %s "$@"'):format(path, cmd)
+                local csh_cmd = ('singularity exec %s %s $*'):format(path, cmd)
                 set_shell_function(cmd, bash_cmd, csh_cmd)
             elseif mode() == "load" then
                 LmodWarning(("Container file not found for shell function '%s': %s"):format(cmd, path))
