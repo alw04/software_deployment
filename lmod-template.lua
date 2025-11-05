@@ -1,3 +1,11 @@
+-- Notes/Known Issues:
+-- 1. .depends_on() will load dependent modules correctly, but unloading them
+--    does not work properly in this script, so they are managed manually.
+--
+-- 2. load() does not behave as expected, anything that needs to be loaded
+--    can be added directly to the software modulefile via ansible.
+--    depends_on() should be used in most cases anyways to manage dependencies
+
 return function(M)
 
     -- Default values for the module
