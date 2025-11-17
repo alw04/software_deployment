@@ -13,8 +13,8 @@ modulefile_template({
   {% if version is defined %}
   version = "{{ version }}",
   {% endif -%}
-  {% if base is defined %}
-  base = "{{ base }}",
+  {% if install_path is defined %}
+  base = "{{ install_path }}",
   {% endif -%}
   {% if description is defined %}
   description = "{{ description }}",
@@ -77,6 +77,13 @@ modulefile_template({
     "{{ module }}"{% if not loop.last %},{% endif -%}
     {% endfor -%}
   },
+  required_modules = {
+    {% for module in depends_on %}
+    "{{ module }}"{% if not loop.last %},{% endif -%}
+    {% endfor -%}
+  },
+  {% endif -%}
+  {% if depends_on is defined %}
   required_modules = {
     {% for module in depends_on %}
     "{{ module }}"{% if not loop.last %},{% endif -%}

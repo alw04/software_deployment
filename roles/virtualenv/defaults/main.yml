@@ -1,3 +1,4 @@
 name: "virtualenv"
+python_version: "3.9.18"
 
 testing: "virtualenv"

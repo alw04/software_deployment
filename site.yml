@@ -27,7 +27,7 @@
     - name: "Fail if invalid software groups are provided"
       fail:
         msg: |
-          The follow software groups do not exist: {{ invalid_groups }}
+          The following software groups do not exist: {{ invalid_groups }}
 
           Available software groups: {{ software_groups_mapping.keys() | list }}
       when: invalid_groups | length > 0

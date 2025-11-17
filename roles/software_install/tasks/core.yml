@@ -1,10 +1,15 @@
-- name: "Compute base path for {{ name }}"
+- name: "Expose defaults for other tasks to use"
+  set_fact:
+    software_path: "{{ software_path }}"
+    containers_path: "{{ containers_path }}"
+
+- name: "Determine base path for {{ name }}"
   set_fact:
     base_path: "{{ containers_path if container | default(false) else software_path }}"
 
-- name: "Compute installed path for {{ name }}"
+- name: "Determine install path for {{ name }}"
   set_fact:
-    installed_path: >-
+    install_path: >-
       {{
         (
         [base_path, 'apps', name] + ([version] if version is defined else [])
@@ -14,22 +19,23 @@
         ) | join('/')
       }}
 
+- name: "Determine modulefile path for {{ name }}"
+  set_fact:
+    modulefile_path: {{ ([base_path, 'modulefiles', name] + ([version] if version is defined else [])) | join('/') }}
+
 - name: "Check if {{ name }} is already installed"
   stat:
-    path: "{{ installed_path }}"
+    path: "{{ install_path }}"
   register: software_installed
 
-- name: Set software skip flag
+- name: "Set software skip flag for {{ name }}"
   set_fact:
     software_skip: "{{ software_installed.stat.exists and not force_rebuild }}"
 
 - name: "Set installation directories for {{ name }}"
   set_fact:
-    install_dirs: >-
-      {{
-        (default_container_dirs if container | default(false) else default_software_dirs)
-        + (extra_dirs | default([]))
-      }}
+    install_dirs: {{ [install_path, modulefile_path] + (extra_dirs | default([])) }}
+  when: not software_skip
 
 - name: "Create installation directories for {{ name }}"
   file:
@@ -42,6 +48,6 @@
 - name: "Create modulefile for {{ name }}"
   template:
     src: "lmod-template.j2"
-    dest: "{{ ([base_path, 'modulefiles', name] + ([version] if version is defined else [])) | join('/') }}.lua"
+    dest: "{{ modulefile_path }}.lua"
     mode: "0644"
   when: not software_skip
