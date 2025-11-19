@@ -1,0 +1,7 @@
+name: "libexpat"
+version: "2.7.3"
+file: "expat-{{ version}}.tar.gz"
+source: "https://github.com/libexpat/libexpat/releases/download/R_2_7_3/{{ file }}"
+
+description: "Expat is a stream-oriented parser in which an application registers handlers for things the parser might find in the XML document (like start tags)."
+website: "https://libexpat.github.io"

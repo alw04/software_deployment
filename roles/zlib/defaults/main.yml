@@ -1,0 +1,9 @@
+name: "zlib"
+version: "1.3.1"
+file: "zlib-{{ version }}.tar.gz"
+source: "https://zlib.net/{{ file }}"
+
+description: |
+  zlib is a free, general purpose lossless compression library for use on virtually any computer hardware and OS.
+  zlib is a compression platform that is portable across platforms.
+website: "https://zlib.net"

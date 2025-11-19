@@ -3,9 +3,11 @@
     tasks_from: core
 
 - name: "Create virtualenv venv"
-  command: "{{ software_path }}/apps/python_3/{{ python_version }}/bin/python3 -m venv {{ install_path }}"
+  command: "{{ software_info.python_3.install_path }}/bin/python3 -m venv {{ install_path }}"
+  when: not software_skip
 
 - name: "Install virtualenv package"
   pip:
     executable: "{{ install_path }}/bin/pip"
     name: virtualenv
+  when: not software_skip

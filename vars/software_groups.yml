@@ -3,3 +3,6 @@ software_groups_mapping:
     - tmux
     - virtualenv
     - python_3
+    - zlib
+    - xz
+    - wget

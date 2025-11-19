@@ -1,7 +1,7 @@
 name: "python_3"
 version: "3.9.18"
-software_file: "Python-{{ version }}.tgz"
-source: "https://www.python.org/ftp/python/{{ version }}/{{ software_file }}"
+file: "Python-{{ version }}.tgz"
+source: "https://www.python.org/ftp/python/{{ version }}/{{ file }}"
 build_configure_cmd: "./configure --prefix={{ install_path }} --with-pydebug --with-ensurepip=install"
 
 description: "Python is an interpreted, object-oriented, high-level programming language."

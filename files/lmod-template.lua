@@ -101,7 +101,7 @@ return function(M)
     end
 
     -- Add custom paths if provided
-    if mode() == "load" and M.prepend_paths then
+    if mode() == "load" and next(M.prepend_paths) then
         for var, value in pairs(M.prepend_paths) do
             if isDir(value) then
                 prepend_path(var, value)
@@ -112,21 +112,21 @@ return function(M)
     end
 
     -- Set any module-specific environment variables
-    if mode() == "load" and M.env_vars then
+    if mode() == "load" and next(M.env_vars) then
         for var, value in pairs(M.env_vars) do
             setenv(var, value)
         end
     end
 
     -- Set any module-specific conflicts
-    if mode() == "load" and M.conflicts then
+    if mode() == "load" and next(M.conflicts) then
         for _, module in ipairs(M.conflicts) do
             conflict(module)
         end
     end
 
     -- Load any module dependencies
-    if mode() == "load" and M.required_modules then
+    if mode() == "load" and next(M.required_modules) then
         for _, module in ipairs(M.required_modules) do
             if not isloaded(module) then
                 if not isAvail(module) then
@@ -142,7 +142,7 @@ return function(M)
     -- lmod normally handles this automatically with depends_on()
     -- but this may not work correctly using this script
     -- so the dependencies are managed manually
-    if mode() == "unload" and M.required_modules then
+    if mode() == "unload" and next(M.required_modules) then
         for _, module in ipairs(M.required_modules) do
             if isloaded(module) then
                 unload(module)
@@ -152,7 +152,7 @@ return function(M)
     end
 
     -- Create shell functions for containers
-    if mode() == "load" and M.shell_functions then
+    if mode() == "load" and next(M.shell_functions) then
         if not isloaded("apptainer") then
             depends_on("apptainer")
         end

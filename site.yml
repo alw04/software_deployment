@@ -11,15 +11,20 @@
     software: ""
     software_groups: ""
 
+    force_rebuild: false
+
+    rebuild_software: ""
+
     software_list: "{{ software.split(',') if software != '' else [] }}"
     software_groups_list: "{{ software_groups.split(',') if software_groups != '' else [] }}"
+    software_rebuild_list: "{{ rebuild_software.split(',') if rebuild_software != '' else [] }}"
 
     group_software: >-
       {{
         software_groups_list | map('trim') | map('lower') | map('extract', software_groups_mapping) | sum(start=[])
       }}
 
-    software_to_install: "{{ (software_list + group_software) | unique }}"
+    software_to_install: "{{ (software_list + group_software + software_rebuild_list) | unique }}"
 
     invalid_groups: "{{ software_groups_list | difference(software_groups_mapping.keys() | list) }}"
 

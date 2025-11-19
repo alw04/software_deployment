@@ -1,0 +1,21 @@
+- include_role:
+    name: software_install
+    tasks_from: core
+
+- name: "Ensure GnuTLS is installed"
+  package:
+    name: "{{ 'gnutls-devel' if ansible_os_family in ['RedHat', 'Fedora'] else 'libgnutls28-dev' }}"
+    state: present
+
+- include_role:
+    name: software_install
+    tasks_from: download_software
+
+- include_role:
+    name: software_install
+    tasks_from: extract_software
+
+- include_role:
+    name: software_install
+    tasks_from: build_software
+

@@ -17,7 +17,7 @@ modulefile_template({
   base = "{{ install_path }}",
   {% endif -%}
   {% if description is defined %}
-  description = "{{ description }}",
+  description = "{{ description | trim | replace('\n', '\\n\t\t\t\t   ') }}",
   {% endif -%}
   {% if usage_notes is defined %}
   usage_notes = "{{ usage_notes }}",
