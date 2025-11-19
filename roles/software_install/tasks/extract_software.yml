@@ -9,11 +9,14 @@
     state: directory
     mode: "0755"
 
+- name: "Set extra options for unarchive"
+  set_fact:
+    archive_opts: "{{ ['--strip-components=' ~ (extract_strip_components | default(1))] if file.endswith(('.tar', '.tar.gz', '.tgz', '.tar.bz2', '.tbz2', '.tar.xz', '.txz')) else [] }}"
+
 - name: "Extract {{ name }} to build directory"
   unarchive:
     src: "{{ download_path }}/{{ file }}"
     dest: "{{ build_path }}"
     copy: no
     mode: "0755"
-    extra_opts:
-      - "--strip-components={{ extract_strip_components | default(1) }}"
+    extra_opts: "{{ archive_opts }}"
