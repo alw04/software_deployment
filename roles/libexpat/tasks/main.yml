@@ -23,3 +23,4 @@
 
     description: "Expat is a stream-oriented parser in which an application registers handlers for things the parser might find in the XML document (like start tags)."
     website: "https://libexpat.github.io"
+    testing: "xmlwf --help"

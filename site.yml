@@ -61,3 +61,11 @@
       loop: "{{ software_to_install }}"
       loop_control:
         loop_var: software_name
+
+    - name: "Software installation summary"
+      debug:
+        msg: |
+          Software installation summary for host {{ inventory_hostname }}:
+
+            Installed: {{ ((software_done | default({})) | list) | length }} -> {{ (software_done | default({})) | list | join(', ') }}
+            Skipped: {{ ((software_to_install | default([])) | difference(software_done | default({}) | list)) | length }} -> {{ ((software_to_install | default([])) | difference(software_done | default({}) | list)) | join(', ') }}
