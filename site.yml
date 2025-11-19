@@ -49,6 +49,14 @@
             ansible-playbook site.yml -e "software=tmux,python_3"
             ansible-playbook site.yml -e "software_groups=common,sequence_tools"
 
+          To rebuild software:
+
+            ansible-playbook site.yml -e "rebuild_software=virtualenv"
+            # Rebuilds only the explicitly listed software without dependencies
+
+            ansible-playbook site.yml -e "software=virtualenv,udunits" -e "force_rebuild=true"
+            # Rebuilds all the selected software including dependencies
+
           Available software groups: {{ software_groups_mapping.keys() | list }}
       when: software_to_install | length == 0
 
