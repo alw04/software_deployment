@@ -1,9 +1,4 @@
 ---
-- name: "Expose defaults for other tasks to use"
-  set_fact:
-    software_path: "{{ software_path }}"
-    containers_path: "{{ containers_path }}"
-
 - name: "Determine base path for {{ name }}"
   set_fact:
     base_path: "{{ containers_path if container | default(false) else software_path }}"
@@ -42,7 +37,7 @@
 
 - name: "Set software skip flag for {{ name }}"
   set_fact:
-    software_skip: "{{ software_done.get(name) | default(false) or (software_installed.stat.exists and not software_force_rebuild) }}"
+    software_skip: "{{ (name in software_done) or (software_installed.stat.exists and not software_force_rebuild) }}"
 
 - name: "Set installation directories for {{ name }}"
   set_fact:
@@ -68,5 +63,5 @@
 
 - name: "Mark {{ name }} as installed"
   set_fact:
-    software_done: "{{ software_done | combine({ name: true }) }}"
+    software_done: "{{ software_done + [name] if name not in software_done else software_done }}"
   when: not software_skip
