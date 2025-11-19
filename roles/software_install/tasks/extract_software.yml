@@ -2,14 +2,12 @@
 - name: "Set build path for {{ name }}"
   set_fact:
     build_path: "{{ ([base_path, 'builds', name] + ([version] if version is defined else [])) | join('/') }}"
-  when: not software_skip
 
 - name: "Create build directory for {{ name }}"
   file:
     path: "{{ build_path }}"
     state: directory
     mode: "0755"
-  when: not software_skip
 
 - name: "Extract {{ name }} to build directory"
   unarchive:
@@ -19,4 +17,3 @@
     mode: "0755"
     extra_opts:
       - "--strip-components={{ extract_strip_components | default(1) }}"
-  when: not software_skip

@@ -4,14 +4,12 @@
   args:
     chdir: "{{ build_path }}"
   environment: "{{ build_env | default({}) }}"
-  when: not software_skip
 
 - name: "Build {{ name }} - Make"
   command: "{{ build_make_cmd | default('make -j ' ~ (ansible_process_vcpus | default (4))) }}"
   args:
     chdir: "{{ build_path }}"
   environment: "{{ build_env | default({}) }}"
-  when: not software_skip
 
 - name: "Build {{ name }} - Install"
   command: "{{ build_install_cmd | default('make install') }}"
@@ -19,4 +17,3 @@
     chdir: "{{ build_path }}"
   environment: "{{ build_env | default({}) }}"
   become: yes
-  when: not software_skip

@@ -1,26 +1,16 @@
 ---
-- block:
-  - include_role:
-      name: software_install
-      tasks_from: core
+- name: "Ensure GnuTLS is installed"
+  package:
+    name: "{{ 'gnutls-devel' if ansible_os_family in ['RedHat', 'Fedora'] else 'libgnutls28-dev' }}"
+    state: present
 
-  - name: "Ensure GnuTLS is installed"
-    package:
-      name: "{{ 'gnutls-devel' if ansible_os_family in ['RedHat', 'Fedora'] else 'libgnutls28-dev' }}"
-      state: present
-
-  - include_role:
-      name: software_install
-      tasks_from: download_software
-
-  - include_role:
-      name: software_install
-      tasks_from: extract_software
-
-  - include_role:
-      name: software_install
-      tasks_from: build_software
+- include_role:
+    name: software_install
   vars:
+    steps:
+      - download_software
+      - extract_software
+      - build_software
     name: "wget"
     version: "1.21.3"
     file: "wget-{{ version }}.tar.gz"

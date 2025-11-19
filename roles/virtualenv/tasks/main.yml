@@ -1,19 +1,9 @@
 ---
-- block:
-  - include_role:
-      name: software_install
-      tasks_from: core
-
-  - name: "Create virtualenv venv"
-    command: "{{ software_info.python_3.install_path }}/bin/python3 -m venv {{ install_path }}"
-    when: not software_skip
-
-  - name: "Install virtualenv package"
-    pip:
-      executable: "{{ install_path }}/bin/pip"
-      name: virtualenv
-    when: not software_skip
+- include_role:
+    name: software_install
   vars:
+    steps:
+      - setup_venv
     name: "virtualenv"
 
     description: "virtualenv is a tool to create isolated Python environments."

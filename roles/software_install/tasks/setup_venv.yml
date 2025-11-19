@@ -1,0 +1,8 @@
+---
+- name: "Create virtualenv for {{ name }}"
+  command: "{{ software_info.python_3.install_path }}/bin/python3 -m venv {{ install_path }}"
+
+- name: "Install {{ name }} into virtualenv"
+  pip:
+    executable: "{{ install_path }}/bin/pip"
+    name: "{{ name }}{{ ('==' ~ version) if version is defined else '' }}"
