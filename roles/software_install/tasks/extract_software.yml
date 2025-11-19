@@ -1,3 +1,4 @@
+---
 - name: "Set build path for {{ name }}"
   set_fact:
     build_path: "{{ ([base_path, 'builds', name] + ([version] if version is defined else [])) | join('/') }}"

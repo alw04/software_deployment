@@ -1,15 +1,26 @@
-- include_role:
-    name: software_install
-    tasks_from: core
+---
+- block:
+  - include_role:
+      name: software_install
+      tasks_from: core
 
-- include_role:
-    name: software_install
-    tasks_from: download_software
+  - include_role:
+      name: software_install
+      tasks_from: download_software
 
-- include_role:
-    name: software_install
-    tasks_from: extract_software
+  - include_role:
+      name: software_install
+      tasks_from: extract_software
 
-- include_role:
-    name: software_install
-    tasks_from: build_software
+  - include_role:
+      name: software_install
+      tasks_from: build_software
+  vars:
+    name: "tmux"
+    version: "3.3a"
+    file: "tmux-{{ version }}.tar.gz"
+    source: "https://github.com/tmux/tmux/releases/download/{{ version }}/{{ file }}"
+
+    description: "A terminal multiplexer that enables a number of terminals to be accessed and controlled from a single terminal"
+    testing: "tmux --help"
+    website: "http://tmux.org"

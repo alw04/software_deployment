@@ -1,16 +1,31 @@
-- include_role:
-    name: software_install
-    tasks_from: core
+---
+- block:
+  - include_role:
+      name: software_install
+      tasks_from: core
 
-- include_role:
-    name: software_install
-    tasks_from: download_software
+  - include_role:
+      name: software_install
+      tasks_from: download_software
 
-- include_role:
-    name: software_install
-    tasks_from: extract_software
+  - include_role:
+      name: software_install
+      tasks_from: extract_software
 
-- include_role:
-    name: software_install
-    tasks_from: build_software
+  - include_role:
+      name: software_install
+      tasks_from: build_software
+  vars:
+    name: "python_3"
+    version: "3.9.18"
+    file: "Python-{{ version }}.tgz"
+    source: "https://www.python.org/ftp/python/{{ version }}/{{ file }}"
+    build_configure_cmd: "./configure --prefix={{ install_path }} --with-pydebug --with-ensurepip=install"
 
+    description: "Python is an interpreted, object-oriented, high-level programming language."
+    testing: "python3 -V"
+    website: "https://python.org"
+
+    conflicts:
+      - python_2
+      - miniconda

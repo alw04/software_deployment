@@ -1,3 +1,4 @@
+---
 - name: "Build {{ name }} - Configure"
   command: "{{ build_configure_cmd | default('./configure --prefix=' ~ install_path) }}"
   args:

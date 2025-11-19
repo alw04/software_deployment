@@ -1,16 +1,28 @@
-- include_role:
-    name: software_install
-    tasks_from: core
+---
+- block:
+  - include_role:
+      name: software_install
+      tasks_from: core
 
-- include_role:
-    name: software_install
-    tasks_from: download_software
+  - include_role:
+      name: software_install
+      tasks_from: download_software
 
-- include_role:
-    name: software_install
-    tasks_from: extract_software
+  - include_role:
+      name: software_install
+      tasks_from: extract_software
 
-- include_role:
-    name: software_install
-    tasks_from: build_software
+  - include_role:
+      name: software_install
+      tasks_from: build_software
+  vars:
+    name: "xz"
+    version: "5.4.1"
+    file: "xz-{{ version }}.tar.gz"
+    source: "https://tukaani.org/xz/{{ file }}"
 
+    description: |
+      xz is a general-purpose, command line data compression utility, similar to gzip and bzip2.
+      xz can be used to compress or decompress a file according to the selected operation mode.
+    website: "https://tukaani.org/xz"
+    testing: "xz --help"

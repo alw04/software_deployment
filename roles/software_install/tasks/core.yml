@@ -1,3 +1,4 @@
+---
 - name: "Expose defaults for other tasks to use"
   set_fact:
     software_path: "{{ software_path }}"
@@ -41,7 +42,7 @@
 
 - name: "Set software skip flag for {{ name }}"
   set_fact:
-    software_skip: "{{ software_installed.stat.exists and not software_force_rebuild }}"
+    software_skip: "{{ software_done.get(name) | default(false) or (software_installed.stat.exists and not software_force_rebuild) }}"
 
 - name: "Set installation directories for {{ name }}"
   set_fact:
@@ -61,4 +62,9 @@
     src: "lmod-template.j2"
     dest: "{{ modulefile_path }}/{{ version if version is defined else name }}.lua"
     mode: "0644"
+  when: not software_skip
+
+- name: "Mark {{ name }} as installed"
+  set_fact:
+    software_done: "{{ software_done | combine({ name: true }) }}"
   when: not software_skip

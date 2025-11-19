@@ -1,3 +1,4 @@
+---
 software_groups_mapping:
   common:
     - tmux
@@ -6,3 +7,5 @@ software_groups_mapping:
     - zlib
     - xz
     - wget
+    - libexpat
+    - udunits
