@@ -1,19 +1,81 @@
 ---
+- name: "Determine build system"
+  set_fact:
+    build_system: "{{ build_system | default('autotools') }}"
+  when: not software_skip
+
+- name: "Fail if build_system is invalid"
+  fail:
+    msg: "Invalid build_system '{{ build_system }}'. Must be one of: cmake, autotools, make."
+  when:
+    - not software_skip
+    - build_system not in ['cmake','autotools','make']
+
+- name: "Determine build commands"
+  set_fact:
+    default_build_configure_cmd: >-
+      {% if build_system == 'cmake' %}
+      cmake -B build -DCMAKE_INSTALL_PREFIX={{ install_path }}
+      {% elif build_system == 'autotools' %}
+      ./configure --prefix={{ install_path }}
+      {% elif build_system == 'make' %}
+      true
+      {% endif %}
+    default_build_make_cmd: >-
+      {% if build_system == 'cmake' %}
+      cmake --build build -- -j {{ ansible_process_vcpus | default(4) }}
+      {% elif build_system == 'autotools' %}
+      make -j {{ ansible_process_vcpus | default(4) }}
+      {% elif build_system == 'make' %}
+      make -j {{ ansible_process_vcpus | default(4) }}
+      {% endif %}
+    default_build_install_cmd: >-
+      {% if build_system == 'cmake' %}
+      cmake --install build
+      {% elif build_system == 'autotools' %}
+      make install
+      {% elif build_system == 'make' %}
+      make install
+      {% endif %}
+
 - name: "Build {{ name }} - Configure"
-  command: "{{ build_configure_cmd | default('./configure --prefix=' ~ install_path) }}"
+  command: "{{ build_configure_cmd | default(default_build_configure_cmd) }}"
   args:
     chdir: "{{ build_dir | default(build_path) }}"
+    creates: >-
+      {{
+        build_dir | default(build_path) ~
+        (
+          '/build/Makefile' if build_system == 'cmake' else
+          '/Makefile' if build_system == 'autotools' else
+          '/Makefile' if build_system == 'make'
+        )
+      }}
   environment: "{{ build_env | default({}) }}"
+  when:
+    - not software_skip
+    - build_system != 'make'
 
 - name: "Build {{ name }} - Make"
-  command: "{{ build_make_cmd | default('make -j ' ~ (ansible_process_vcpus | default (4))) }}"
+  command: "{{ build_make_cmd | default(default_build_make_cmd) }}"
   args:
     chdir: "{{ build_dir | default(build_path) }}"
+    creates: >-
+      {{
+        build_dir | default(build_path) ~
+        (
+          '/build/' ~ name if build_system == 'cmake' else
+          '/' ~ name if build_system == 'autotools' else
+          '/' ~ name if build_system == 'make'
+        )
+      }}
   environment: "{{ build_env | default({}) }}"
+  when: not software_skip
 
 - name: "Build {{ name }} - Install"
-  command: "{{ build_install_cmd | default('make install') }}"
+  command: "{{ build_install_cmd | default(default_build_install_cmd) }}"
   args:
     chdir: "{{ build_dir | default(build_path) }}"
+    creates: "{{ install_path }}/bin/{{ name }}"
   environment: "{{ build_env | default({}) }}"
-  become: yes
+  when: not software_skip

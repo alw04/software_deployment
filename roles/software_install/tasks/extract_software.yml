@@ -2,16 +2,19 @@
 - name: "Set build path for {{ name }}"
   set_fact:
     build_path: "{{ ([base_path, 'builds', name] + ([version] if version is defined else [])) | join('/') }}"
+  when: not software_skip
 
 - name: "Create build directory for {{ name }}"
   file:
     path: "{{ build_path }}"
     state: directory
     mode: "0755"
+  when: not software_skip
 
 - name: "Set extra options for unarchive"
   set_fact:
     archive_opts: "{{ ['--strip-components=' ~ (extract_strip_components | default(1))] if file.endswith(('.tar', '.tar.gz', '.tgz', '.tar.bz2', '.tbz2', '.tar.xz', '.txz')) else [] }}"
+  when: not software_skip
 
 - name: "Extract {{ name }} to build directory"
   unarchive:
@@ -20,3 +23,4 @@
     copy: no
     mode: "0755"
     extra_opts: "{{ archive_opts }}"
+  when: not software_skip

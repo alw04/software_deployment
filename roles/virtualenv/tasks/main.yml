@@ -9,3 +9,7 @@
     description: "virtualenv is a tool to create isolated Python environments."
     website: "https://virtualenv.pypa.io/en/latest"
     testing: "virtualenv"
+    libraries_used: "python3"
+    depends_on:
+      - python_3
+    packages_used: "python3"

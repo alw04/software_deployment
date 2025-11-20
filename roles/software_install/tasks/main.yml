@@ -6,3 +6,5 @@
   loop_control:
     loop_var: task
   when: not software_skip
+
+- include_tasks: mark_installed.yml

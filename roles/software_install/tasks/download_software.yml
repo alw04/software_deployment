@@ -2,12 +2,14 @@
 - name: "Set download path for {{ name }}"
   set_fact:
     download_path: "{{ ([base_path, 'downloads', name] + ([version] if version is defined else [])) | join('/') }}"
+  when: not software_skip
 
 - name: "Create download directory for {{ name }}"
   file:
     path: "{{ download_path }}"
     state: directory
     mode: "0755"
+  when: not software_skip
 
 - name: "Download {{ name }}"
   get_url:
@@ -15,3 +17,4 @@
     dest: "{{ download_path }}/{{ file }}"
     mode: "0755"
     force: no
+  when: not software_skip

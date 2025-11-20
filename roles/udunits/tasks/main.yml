@@ -11,7 +11,7 @@
     file: "udunits-{{ version }}.tar.gz"
     source: "https://downloads.unidata.ucar.edu/udunits/{{ version }}/{{ file }}"
     build_env:
-      PKG_CONFIG_PATH: "{{ software_info.libexpat.install_path }}/lib/pkgconfig:$PKG_CONFIG_PATH"
+      PKG_CONFIG_PATH: "{{ software_info.libexpat.install_path }}/lib/pkgconfig"
       CFLAGS: "-I{{ software_info.libexpat.install_path }}/include"
       LDFLAGS: "-L{{ software_info.libexpat.install_path }}/lib"
 

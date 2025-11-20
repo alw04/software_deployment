@@ -22,22 +22,25 @@
       'install_path': install_path | default('')
       }}) }}"
 
-- name: "Determine modulefile path for {{ name }}"
-  set_fact:
-    modulefile_path: "{{ ([base_path, 'modulefiles', name]) | join('/') }}"
+- name: "Check if {{ name }} is already installed"
+  find:
+    paths: "{{ install_path }}"
+    file_type: any
+    recurse: no
+  register: software_found
 
 - name: "Determine if {{ name }} should be rebuilt"
   set_fact:
     software_force_rebuild: "{{ force_rebuild or (name in software_rebuild_list | default([])) }}"
 
-- name: "Check if {{ name }} is already installed"
-  stat:
-    path: "{{ install_path }}"
-  register: software_installed
-
 - name: "Set software skip flag for {{ name }}"
   set_fact:
-    software_skip: "{{ (name in software_done) or (software_installed.stat.exists and not software_force_rebuild) }}"
+    software_skip: "{{ (name in software_done) or (software_found.matched > 0 and not software_force_rebuild) }}"
+
+- name: "Determine modulefile path for {{ name }}"
+  set_fact:
+    modulefile_path: "{{ ([base_path, 'modulefiles', name]) | join('/') }}"
+  when: not software_skip
 
 - name: "Set installation directories for {{ name }}"
   set_fact:
@@ -59,9 +62,4 @@
     src: "lmod-template.j2"
     dest: "{{ modulefile_path }}/{{ version if version is defined else name }}.lua"
     mode: "0644"
-  when: not software_skip
-
-- name: "Mark {{ name }} as installed"
-  set_fact:
-    software_done: "{{ software_done + [name] if name not in software_done else software_done }}"
   when: not software_skip
