@@ -1,11 +1,5 @@
 local modulefile_template = loadfile("{{ lmod_template_path }}")()
 
-{% if load is defined %}
-{% for module in load %}
-load("{{ module }}")
-{% endfor -%}
-{% endif -%}
-
 modulefile_template({
   {% if name is defined %}
   name = "{{ name }}",
@@ -14,22 +8,13 @@ modulefile_template({
   version = "{{ version }}",
   {% endif -%}
   {% if install_path is defined %}
-  base = "{{ install_path }}",
+  install_path = "{{ install_path }}",
   {% endif -%}
   {% if description is defined %}
   description = "{{ description | trim | replace('\n', '\\n\t\t\t\t   ') }}",
   {% endif -%}
   {% if usage_notes is defined %}
   usage_notes = "{{ usage_notes }}",
-  {% endif -%}
-  {% if libraries_used is defined %}
-  libraries_used = "{{ libraries_used }}",
-  {% endif -%}
-  {% if packages_used is defined %}
-  packages_used = "{{ packages_used }}",
-  {% endif -%}
-  {% if optional_packages is defined %}
-  optional_packages = "{{ optional_packages }}",
   {% endif -%}
   {% if testing is defined %}
   testing = "{{ testing }}",
@@ -40,15 +25,12 @@ modulefile_template({
   {% if source is defined %}
   source = "{{ source }}",
   {% endif -%}
-  {% if built_by is defined %}
-  built_by = "{{ built_by }}",
-  {% else %}
-  built_by = "IASTATE",
-  {% endif -%}
-  {% if build_date is defined %}
-  build_date = "{{ build_date }}",
-  {% else %}
-  build_date = "{{ ansible_date_time.date }}",
+  {% if depends_on is defined %}
+  required_modules = {
+    {% for module in depends_on %}
+    "{{ module }}"{% if not loop.last %},{% endif -%}
+    {% endfor -%}
+  },
   {% endif -%}
   {% if prepend_paths is defined %}
   prepend_paths = {
@@ -83,11 +65,6 @@ modulefile_template({
     {% endfor -%}
   },
   {% endif -%}
-  {% if depends_on is defined %}
-  required_modules = {
-    {% for module in depends_on %}
-    "{{ module }}"{% if not loop.last %},{% endif -%}
-    {% endfor -%}
-  },
-  {% endif -%}
+  built_by = "{{ built_by | default('IASTATE') }}",
+  build_date = "{{ build_date | default(ansible_date_time.date) }}",
 })

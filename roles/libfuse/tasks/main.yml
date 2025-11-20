@@ -1,0 +1,15 @@
+- include_role:
+    name: software_install
+  vars:
+    steps:
+      - download_software
+      - extract_software
+      - build_software
+    name: "libfuse"
+    version: "3.17.4"
+    file: "fuse-{{ version }}.tar.gz"
+    source: "https://github.com/libfuse/libfuse/releases/download/fuse-{{ version }}/{{ file }}"
+    build_system: "meson"
+
+    description: "The reference implementation of the Linux FUSE (Filesystem in Userspace) interface"
+    website: "https://github.com/libfuse/libfuse"

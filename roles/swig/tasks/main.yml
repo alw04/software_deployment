@@ -15,7 +15,5 @@
     description: "SWIG is an interface compiler that connects programs written in C and C++ with scripting languages such as Perl, Python, Ruby, and Tcl"
     testing: "swig --help"
     website: "https://www.swig.org"
-    libraries_used: "pcre2"
     depends_on:
       - pcre2
-    packages_used: "pcre2"

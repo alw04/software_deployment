@@ -6,10 +6,10 @@
 
 - name: "Fail if build_system is invalid"
   fail:
-    msg: "Invalid build_system '{{ build_system }}'. Must be one of: cmake, autotools, make."
+    msg: "Invalid build_system '{{ build_system }}'. Must be one of: cmake, autotools, make, meson."
   when:
     - not software_skip
-    - build_system not in ['cmake','autotools','make']
+    - build_system not in ['cmake','autotools','make','meson']
 
 - name: "Determine build commands"
   set_fact:
@@ -20,22 +20,24 @@
       ./configure --prefix={{ install_path }}
       {% elif build_system == 'make' %}
       true
+      {% elif build_system == 'meson' %}
+      meson setup build --prefix={{ install_path }}
       {% endif %}
     default_build_make_cmd: >-
       {% if build_system == 'cmake' %}
       cmake --build build -- -j {{ ansible_process_vcpus | default(4) }}
-      {% elif build_system == 'autotools' %}
+      {% elif build_system == 'autotools' or build_system == 'make' %}
       make -j {{ ansible_process_vcpus | default(4) }}
-      {% elif build_system == 'make' %}
-      make -j {{ ansible_process_vcpus | default(4) }}
+      {% elif build_system == 'meson' %}
+      ninja -C build -j {{ ansible_process_vcpus | default(4) }}
       {% endif %}
     default_build_install_cmd: >-
       {% if build_system == 'cmake' %}
       cmake --install build
-      {% elif build_system == 'autotools' %}
+      {% elif build_system == 'autotools' or build_system == 'make' %}
       make install
-      {% elif build_system == 'make' %}
-      make install
+      {% elif build_system == 'meson' %}
+      ninja -C build install
       {% endif %}
 
 - name: "Build {{ name }} - Configure"
@@ -47,8 +49,8 @@
         build_dir | default(build_path) ~
         (
           '/build/Makefile' if build_system == 'cmake' else
-          '/Makefile' if build_system == 'autotools' else
-          '/Makefile' if build_system == 'make'
+          '/Makefile' if build_system in ['autotools','make'] else
+          '/build/build.ninja' if build_system == 'meson'
         )
       }}
   environment: "{{ build_env | default({}) }}"
@@ -64,9 +66,8 @@
       {{
         build_dir | default(build_path) ~
         (
-          '/build/' ~ name if build_system == 'cmake' else
-          '/' ~ name if build_system == 'autotools' else
-          '/' ~ name if build_system == 'make'
+          '/build/' ~ name if build_system in ['cmake','meson'] else
+          '/' ~ name if build_system in ['autotools','make']
         )
       }}
   environment: "{{ build_env | default({}) }}"

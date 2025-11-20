@@ -6,7 +6,5 @@
     name: "meson"
 
     testing: "meson"
-    libraries_used: "python3"
     depends_on:
       - python_3
-    packages_used: "python3"
