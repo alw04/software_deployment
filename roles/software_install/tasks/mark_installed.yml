@@ -1,4 +1,4 @@
 - name: "Mark {{ name }} as installed"
   set_fact:
     software_done: "{{ software_done + [name] if name not in software_done else software_done }}"
-  when: not software_skip
+  when: not vars.get(name ~ '_skip')

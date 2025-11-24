@@ -9,3 +9,11 @@ software_groups_mapping:
     - wget
     - libexpat
     - udunits
+    - libfuse
+    - squashfuse
+    - perl
+    - pcre2
+    - swig
+    - tcl
+    - tk
+    - texinfo

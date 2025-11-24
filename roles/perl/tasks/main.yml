@@ -1,17 +1,3 @@
 ---
 - include_role:
     name: software_install
-  vars:
-    steps:
-      - download_software
-      - extract_software
-      - build_software
-    name: "perl"
-    version: "5.36.0"
-    file: "perl-{{ version }}.tar.gz"
-    source: "http://www.cpan.org/src/5.0/{{ file }}"
-    build_configure_cmd: "./Configure -des -Dprefix={{ install_path }} -Dusethreads"
-
-    description: "Perl is a family of two high-level, general purpose, interpreted, dynamic programming languages."
-    testing: "perl -v"
-    website: "https://www.perl.org"

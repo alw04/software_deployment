@@ -2,9 +2,10 @@
 
 - name: "Include software steps for {{ name }}"
   include_tasks: "{{ task }}.yml"
-  loop: "{{ steps | default([]) }}"
+  loop: "{{ vars.get(name ~ '_steps', []) }}"
   loop_control:
     loop_var: task
-  when: not software_skip
+  when: not vars.get(name ~ '_skip')
 
 - include_tasks: mark_installed.yml
+  when: not vars.get(name ~ '_skip')

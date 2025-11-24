@@ -1,16 +1,17 @@
 ---
 - name: "Add python_3 to depends_on"
   set_fact:
-    depends_on: "{{ (depends_on | default([])) + ['python_3'] }}"
+    "{{ name }}_depends_on": "{{ vars.get(name ~ '_depends_on', []) + ['python_3'] }}"
+  when: not vars.get(name ~ '_skip')
 
 - name: "Create virtualenv for {{ name }}"
-  command: "{{ software_info.python_3.install_path }}/bin/python3 -m venv {{ install_path }}"
+  command: "{{ python_3_install_path }}/bin/python3 -m venv {{ vars.get(name ~ '_install_path') }}"
   args:
-    creates: "{{ install_path }}/bin/activate"
-  when: not software_skip
+    creates: "{{ vars.get(name ~ '_install_path') }}/bin/activate"
+  when: not vars.get(name ~ '_skip')
 
 - name: "Install {{ name }} into virtualenv"
   pip:
-    executable: "{{ install_path }}/bin/pip"
-    name: "{{ name }}{{ ('==' ~ version) if version is defined else '' }}"
-  when: not software_skip
+    executable: "{{ vars.get(name ~ '_install_path') }}/bin/pip"
+    name: "{{ name }}{{ ('==' ~ vars.get(name ~ '_version')) if vars.get(name ~ '_version') else '' }}"
+  when: not vars.get(name ~ '_skip')

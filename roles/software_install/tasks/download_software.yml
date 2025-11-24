@@ -1,20 +1,26 @@
 ---
+- name: "Set up download variables for {{ name }}"
+  set_fact:
+    "{{ name }}_file": "{{ lookup('vars', name ~ '_file') }}"
+    "{{ name }}_source": "{{ lookup('vars', name ~ '_source') }}"
+  when: not vars.get(name ~ '_skip')
+
 - name: "Set download path for {{ name }}"
   set_fact:
-    download_path: "{{ ([base_path, 'downloads', name] + ([version] if version is defined else [])) | join('/') }}"
-  when: not software_skip
+    "{{ name }}_download_path": "{{ ([ vars.get(name ~ '_base_path'), 'downloads', name ] + ([ vars.get(name ~ '_version') ] if vars.get(name ~ '_version') else [])) | join('/') }}"
+  when: not vars.get(name ~ '_skip')
 
 - name: "Create download directory for {{ name }}"
   file:
-    path: "{{ download_path }}"
+    path: "{{ vars.get(name ~ '_download_path') }}"
     state: directory
     mode: "0755"
-  when: not software_skip
+  when: not vars.get(name ~ '_skip')
 
 - name: "Download {{ name }}"
   get_url:
-    url: "{{ source }}"
-    dest: "{{ download_path }}/{{ file }}"
+    url: "{{ vars.get(name ~ '_source') }}"
+    dest: "{{ vars.get(name ~ '_download_path') }}/{{ vars.get(name ~ '_file') }}"
     mode: "0755"
     force: no
-  when: not software_skip
+  when: not vars.get(name ~ '_skip')
