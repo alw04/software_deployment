@@ -7,9 +7,9 @@ software_groups_mapping:
     - zlib
     - xz
     - wget
-    - libexpat
+    - expat
     - udunits
-    - libfuse
+    - fuse3
     - squashfuse
     - perl
     - pcre2

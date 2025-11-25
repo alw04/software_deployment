@@ -1,7 +1,7 @@
 ---
 - block:
   - name: "Create virtualenv for {{ name }}"
-    command: "{{ vars.get(name ~ '_install_path') }}/bin/python3 -m venv {{ vars.get(name ~ '_install_path') }}"
+    command: "{{ python_3_install_path }}/bin/python3 -m venv {{ vars.get(name ~ '_install_path') }}"
 
   - name: "Install {{ name }} into virtualenv"
     pip:

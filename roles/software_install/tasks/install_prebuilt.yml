@@ -1,0 +1,8 @@
+---
+- name: "Copy {{ name }} files from build directory"
+  copy:
+    src: "{{ vars.get(name ~ '_build_path') }}/"
+    dest: "{{ vars.get(name ~ '_install_path') }}/"
+    mode: "0755"
+    remote_src: true
+  when: not vars.get(name ~ '_skip')

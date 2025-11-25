@@ -1,0 +1,15 @@
+---
+name: "libseccomp"
+libseccomp_steps:
+  - download_software
+  - extract_software
+  - build_software
+libseccomp_version: "2.6.0"
+libseccomp_file: "libseccomp-{{ libseccomp_version }}.tar.gz"
+libseccomp_source: "https://github.com/seccomp/libseccomp/releases/download/v{{ libseccomp_version }}/{{ libseccomp_file }}"
+libseccomp_build_env:
+  PATH: "{{ gperf_install_path }}/bin:{{ ansible_env.PATH }}"
+
+libseccomp_website: "https://github.com/seccomp/libseccomp"
+libseccomp_description: "The libseccomp library provides an easy to use, platform independent, interface to the Linux Kernel's syscall filtering mechanism. The libseccomp API is designed to abstract away the underlying BPF based syscall filter language and present a more conventional function-call based filtering interface that should be familiar to, and easily adopted by, application developers."
+libseccomp_testing_cmd: "scmp_sys_resolver"

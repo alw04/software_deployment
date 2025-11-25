@@ -1,0 +1,6 @@
+---
+dependencies:
+  - go
+  - libseccomp
+  - pcre2
+  # - glib_2  # built OK, but Singularity wouldn’t pick it up; using system version
