@@ -1,16 +1,3 @@
+---
 - include_role:
     name: software_install
-  vars:
-    steps:
-      - download_software
-      - extract_software
-      - build_software
-    name: "tk"
-    version: "8.6.13"
-    file: "tk8613-src.zip"
-    source: "http://prdownloads.sourceforge.net/tcl/{{ file }}"
-    build_dir: "{{ build_path }}/tk{{ version }}/unix"
-    build_configure_cmd: "./configure --prefix={{ install_path }} --enable-threads --with-tcl={{ software_info.tcl.install_path }}/lib"
-
-    description: " Tk is a graphical user interface toolkit that takes developing desktop applications to a higher level than conventional approaches. Tk is the standard GUI not only for Tcl, but for many other dynamic languages, and can produce rich, native applications that run unchanged across Windows, Mac OS X, Linux and more."
-    website: "https://www.tcl-lang.org"

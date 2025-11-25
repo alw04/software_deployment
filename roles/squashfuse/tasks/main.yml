@@ -1,18 +1,3 @@
+---
 - include_role:
     name: software_install
-  vars:
-    steps:
-      - download_software
-      - extract_software
-      - build_software
-    name: "squashfuse"
-    version: "0.5.2"
-    file: "squashfuse-{{ version }}.tar.gz"
-    source: "https://github.com/vasi/squashfuse/releases/download/{{ version }}/{{ file }}"
-    build_env:
-      PKG_CONFIG_PATH: "{{ software_info.libfuse.install_path }}/lib64/pkgconfig"
-
-    description: "FUSE filesystem to mount squashfs archives"
-    website: "https://github.com/vasi/squashfuse"
-    depends_on:
-      - libfuse

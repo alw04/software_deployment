@@ -1,3 +1,4 @@
+---
 name: "perl"
 perl_steps:
   - download_software
@@ -6,7 +7,7 @@ perl_steps:
 perl_version: "5.36.0"
 perl_file: "perl-{{ perl_version }}.tar.gz"
 perl_source: "http://www.cpan.org/src/5.0/{{ perl_file }}"
-perl_build_configure_cmd: "./Configure -des -Dprefix={{ install_path }} -Dusethreads"
+perl_build_configure_cmd: "./Configure -des -Dprefix={{ perl_install_path }} -Dusethreads"
 
 perl_description: "Perl is a family of two high-level, general purpose, interpreted, dynamic programming languages."
 perl_testing: "perl -v"

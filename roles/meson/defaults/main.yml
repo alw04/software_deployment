@@ -1,0 +1,6 @@
+---
+name: "meson"
+meson_steps:
+  - setup_venv
+
+meson_testing: "meson"

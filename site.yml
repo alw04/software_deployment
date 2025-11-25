@@ -41,7 +41,7 @@
           Available software groups: {{ software_groups_mapping.keys() | list }}
       when: invalid_groups | length > 0
 
-    - name: "Check if any software was selected"
+    - name: "Fail if no software was selected"
       fail:
         msg: |
           No software or software groups were selected.

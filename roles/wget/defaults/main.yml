@@ -1,0 +1,13 @@
+---
+name: "wget"
+wget_steps:
+  - download_software
+  - extract_software
+  - build_software
+wget_version: "1.21.3"
+wget_file: "wget-{{ wget_version }}.tar.gz"
+wget_source: "https://ftp.gnu.org/gnu/wget/{{ wget_file }}"
+
+wget_description: "GNU Wget is a free software package for retrieving files using HTTP, HTTPS, FTP and FTPS, the most widely used Internet protocols. It is a non-interactive commandline tool, so it may easily be called from scripts, cron jobs, terminals without X-Windows support, etc."
+wget_website: "https://www.gnu.org/software/wget"
+wget_testing: "wget --help"

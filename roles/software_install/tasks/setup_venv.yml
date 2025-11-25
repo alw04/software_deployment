@@ -1,11 +1,6 @@
 ---
-- name: "Add python_3 to depends_on"
-  set_fact:
-    "{{ name }}_depends_on": "{{ vars.get(name ~ '_depends_on', []) + ['python_3'] }}"
-  when: not vars.get(name ~ '_skip')
-
 - name: "Create virtualenv for {{ name }}"
-  command: "{{ python_3_install_path }}/bin/python3 -m venv {{ vars.get(name ~ '_install_path') }}"
+  command: "{{ vars.get(name ~ '_install_path') }}/bin/python3 -m venv {{ vars.get(name ~ '_install_path') }}"
   args:
     creates: "{{ vars.get(name ~ '_install_path') }}/bin/activate"
   when: not vars.get(name ~ '_skip')

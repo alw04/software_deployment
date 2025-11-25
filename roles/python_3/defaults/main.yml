@@ -1,0 +1,18 @@
+---
+name: "python_3"
+python_3_steps:
+  - download_software
+  - extract_software
+  - build_software
+python_3_version: "3.9.18"
+python_3_file: "Python-{{ python_3_version }}.tgz"
+python_3_source: "https://www.python.org/ftp/python/{{ python_3_version }}/{{ python_3_file }}"
+python_3_build_configure_flags: "--with-pydebug --with-ensurepip=install"
+
+python_3_description: "Python is an interpreted, object-oriented, high-level programming language."
+python_3_testing: "python3 -V"
+python_3_website: "https://python.org"
+
+python_3_conflicts:
+  - python_2
+  - miniconda

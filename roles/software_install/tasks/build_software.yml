@@ -1,4 +1,22 @@
 ---
+- name: "Set up build variables for {{ name }}"
+  set_fact:
+    "{{ name }}_{{ suffix}}": "{{ lookup('vars', name ~ '_' ~ suffix) }}"
+  loop:
+    - build_configure_cmd
+    - build_make_cmd
+    - build_install_cmd
+    - build_configure_flags
+    - build_make_flags
+    - build_install_flags
+    - build_env
+    - build_dir
+  loop_control:
+    loop_var: suffix
+  when:
+    - not vars.get(name ~ '_skip')
+    - vars.get(name ~ '_' ~ suffix)
+
 - name: "Determine build system for {{ name }}"
   set_fact:
     "{{ name }}_build_system": "{{ vars.get(name ~ '_build_system', 'autotools') }}"

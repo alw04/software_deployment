@@ -1,0 +1,16 @@
+---
+name: "squashfuse"
+squashfuse_steps:
+  - download_software
+  - extract_software
+  - build_software
+squashfuse_version: "0.5.2"
+squashfuse_file: "squashfuse-{{ squashfuse_version }}.tar.gz"
+squashfuse_source: "https://github.com/vasi/squashfuse/releases/download/{{ squashfuse_version }}/{{ squashfuse_file }}"
+squashfuse_build_env:
+  PKG_CONFIG_PATH: "{{ libfuse_install_path }}/lib64/pkgconfig"
+
+squashfuse_description: "FUSE filesystem to mount squashfs archives"
+squashfuse_website: "https://github.com/vasi/squashfuse"
+squashfuse_depends_on:
+  - libfuse

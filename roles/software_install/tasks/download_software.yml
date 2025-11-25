@@ -1,9 +1,15 @@
 ---
 - name: "Set up download variables for {{ name }}"
   set_fact:
-    "{{ name }}_file": "{{ lookup('vars', name ~ '_file') }}"
-    "{{ name }}_source": "{{ lookup('vars', name ~ '_source') }}"
-  when: not vars.get(name ~ '_skip')
+    "{{ name }}_{{ suffix }}": "{{ lookup('vars', name ~ '_' ~ suffix) }}"
+  loop:
+    - file
+    - source
+  loop_control:
+    loop_var: suffix
+  when:
+    - not vars.get(name ~ '_skip')
+    - vars.get(name ~ '_' ~ suffix)
 
 - name: "Set download path for {{ name }}"
   set_fact:

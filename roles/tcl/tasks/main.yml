@@ -1,16 +1,3 @@
+---
 - include_role:
     name: software_install
-  vars:
-    steps:
-      - download_software
-      - extract_software
-      - build_software
-    name: "tcl"
-    version: "8.6.13"
-    file: "tcl8613-src.zip"
-    source: "http://prdownloads.sourceforge.net/tcl/{{ file }}"
-    build_dir: "{{ build_path }}/tcl{{ version }}/unix"
-    build_configure_cmd: "./configure --prefix={{ install_path }} --enable-threads"
-
-    description: "Tcl (Tool Command Language) is a very powerful but easy to learn dynamic programming language, suitable for a very wide range of uses, including web and desktop applications, networking, administration, testing and many more."
-    website: "https://www.tcl-lang.org"

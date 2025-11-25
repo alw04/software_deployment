@@ -1,10 +1,3 @@
+---
 - include_role:
     name: software_install
-  vars:
-    steps:
-      - setup_venv
-    name: "meson"
-
-    testing: "meson"
-    depends_on:
-      - python_3

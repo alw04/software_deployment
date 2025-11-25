@@ -1,0 +1,10 @@
+---
+name: "ninja"
+ninja_steps:
+  - download_software
+  - extract_software
+  - build_software
+ninja_version: "1.11.1"
+ninja_file: "v{{ ninja_version }}.tar.gz"
+ninja_source: "https://github.com/ninja-build/ninja/archive/refs/tags/{{ ninja_file }}"
+ninja_build_system: "cmake"
