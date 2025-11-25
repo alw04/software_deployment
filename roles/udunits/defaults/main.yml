@@ -14,4 +14,4 @@ udunits_build_env:
 
 udunits_description: "The UDUNITS package from Unidata is a C-based package for the programatic handling of units of physical quantities."
 udunits_website: "http://www.unidata.ucar.edu/downloads/udunits/index.jsp"
-udunits_testing: "udunits2"
+udunits_testing_cmd: "udunits2"

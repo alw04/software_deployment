@@ -10,7 +10,7 @@ python_3_source: "https://www.python.org/ftp/python/{{ python_3_version }}/{{ py
 python_3_build_configure_flags: "--with-pydebug --with-ensurepip=install"
 
 python_3_description: "Python is an interpreted, object-oriented, high-level programming language."
-python_3_testing: "python3 -V"
+python_3_testing_cmd: "python3 -V"
 python_3_website: "https://python.org"
 
 python_3_conflicts:

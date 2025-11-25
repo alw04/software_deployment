@@ -1,15 +1,3 @@
+---
 - include_role:
     name: software_install
-  vars:
-    steps:
-      - download_software
-      - extract_software
-      - build_software
-    name: "tbb"
-    version: "2022.3.0"
-    file: "oneapi-tbb-{{ version }}-lin.tgz"
-    source: "https://github.com/uxlfoundation/oneTBB/releases/download/v{{ version }}/{{ file }}"
-    build_system: "cmake"
-
-    website: "https://uxlfoundation.github.io/oneTBB"
-    description: "oneTBB is a flexible C++ library that simplifies the work of adding parallelism to complex applications, even if you are not a threading expert."

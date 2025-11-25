@@ -16,8 +16,8 @@ modulefile_template({
   {% if vars.get(name ~ '_usage_notes') %}
   usage_notes = "{{ vars.get(name ~ '_usage_notes') }}",
   {% endif -%}
-  {% if vars.get(name ~ '_testing') %}
-  testing = "{{ vars.get(name ~ '_testing') }}",
+  {% if vars.get(name ~ '_testing_cmd') %}
+  testing = "{{ vars.get(name ~ '_testing_cmd') }}",
   {% endif -%}
   {% if vars.get(name ~ '_website') %}
   website = "{{ vars.get(name ~ '_website') }}",

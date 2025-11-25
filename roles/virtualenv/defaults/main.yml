@@ -5,4 +5,4 @@ virtualenv_steps:
 
 virtualenv_description: "virtualenv is a tool to create isolated Python environments."
 virtualenv_website: "https://virtualenv.pypa.io/en/latest"
-virtualenv_testing: "virtualenv"
+virtualenv_testing_cmd: "virtualenv"

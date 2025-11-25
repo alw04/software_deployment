@@ -32,7 +32,7 @@
 
 - name: "Set {{ name }} skip flag"
   set_fact:
-    "{{ name }}_skip": "{{ (name in vars.get('software_done', [])) or (vars.get(name ~ '_found').matched > 0 and not vars.get(name ~ '_force_rebuild', false)) }}"
+    "{{ name }}_skip": "{{ (name in vars.get('software_done', [])) or (name in vars.get('software_failed', [])) or (vars.get(name ~ '_found').matched > 0 and not vars.get(name ~ '_force_rebuild', false)) }}"
 
 - name: "Determine modulefile path for {{ name }}"
   set_fact:

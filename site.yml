@@ -1,7 +1,8 @@
 ---
 - hosts: localhost
   become: true
-  gather_facts: yes
+  become_user: ansible.software
+  gather_facts: true
 
   vars_files:
     - vars/software_groups.yml

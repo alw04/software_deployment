@@ -9,5 +9,5 @@ tmux_file: "tmux-{{ tmux_version }}.tar.gz"
 tmux_source: "https://github.com/tmux/tmux/releases/download/{{ tmux_version }}/{{ tmux_file }}"
 
 tmux_description: "A terminal multiplexer that enables a number of terminals to be accessed and controlled from a single terminal"
-tmux_testing: "tmux --help"
+tmux_testing_cmd: "tmux --help"
 tmux_website: "http://tmux.org"

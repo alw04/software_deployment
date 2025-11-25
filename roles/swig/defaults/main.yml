@@ -11,7 +11,7 @@ swig_build_env:
   PATH: "{{ pcre2_install_path }}/bin:{{ ansible_env.PATH }}"
 
 swig_description: "SWIG is an interface compiler that connects programs written in C and C++ with scripting languages such as Perl, Python, Ruby, and Tcl"
-swig_testing: "swig --help"
+swig_testing_cmd: "swig --help"
 swig_website: "https://www.swig.org"
 swig_depends_on:
   - pcre2

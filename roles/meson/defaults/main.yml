@@ -3,4 +3,4 @@ name: "meson"
 meson_steps:
   - setup_venv
 
-meson_testing: "meson"
+meson_testing_cmd: "meson"

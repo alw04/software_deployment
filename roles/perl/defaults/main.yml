@@ -10,5 +10,5 @@ perl_source: "http://www.cpan.org/src/5.0/{{ perl_file }}"
 perl_build_configure_cmd: "./Configure -des -Dprefix={{ perl_install_path }} -Dusethreads"
 
 perl_description: "Perl is a family of two high-level, general purpose, interpreted, dynamic programming languages."
-perl_testing: "perl -v"
+perl_testing_cmd: "perl -v"
 perl_website: "https://www.perl.org"

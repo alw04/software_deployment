@@ -10,4 +10,4 @@ libexpat_source: "https://github.com/libexpat/libexpat/releases/download/R_2_7_3
 
 libexpat_description: "Expat is a stream-oriented parser in which an application registers handlers for things the parser might find in the XML document (like start tags)."
 libexpat_website: "https://libexpat.github.io"
-libexpat_testing: "xmlwf --help"
+libexpat_testing_cmd: "xmlwf --help"
