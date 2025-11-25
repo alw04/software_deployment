@@ -1,6 +1,6 @@
 ---
 name: "meson"
 meson_steps:
-  - setup_venv
+  - create_venv
 
-meson_testing_cmd: "meson"
+meson_testing_cmd: "meson --help"

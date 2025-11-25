@@ -11,3 +11,4 @@ libfuse_build_system: "meson"
 
 libfuse_description: "The reference implementation of the Linux FUSE (Filesystem in Userspace) interface"
 libfuse_website: "https://github.com/libfuse/libfuse"
+libfuse_testing_cmd: "fusermount3 --help"

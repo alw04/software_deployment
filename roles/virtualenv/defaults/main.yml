@@ -1,7 +1,7 @@
 ---
 name: "virtualenv"
 virtualenv_steps:
-  - setup_venv
+  - create_venv
 
 virtualenv_description: "virtualenv is a tool to create isolated Python environments."
 virtualenv_website: "https://virtualenv.pypa.io/en/latest"

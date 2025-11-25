@@ -1,0 +1,26 @@
+---
+- include_role:
+    name: software_install
+    tasks_from: core
+
+- block:
+  - include_role:
+      name: software_install
+      tasks_from: download_software
+
+  - name: "Install miniconda"
+    command: "{{ miniconda_download_path }}/{{ miniconda_file }} -b -p {{ miniconda_install_path }} -u"
+
+  - name: "Deploy .condarc for conda"
+    copy:
+      src: "condarc"
+      dest: "{{ miniconda_install_path }}/.condarc"
+      mode: "0644"
+
+  - name: "Install conda tools"
+    command: "{{ miniconda_install_path }}/bin/conda install -n base mamba conda-libmamba-solver -y"
+
+  - include_role:
+      name: software_install
+      tasks_from: mark_installed
+  when: not miniconda_skip

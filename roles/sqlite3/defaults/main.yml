@@ -1,0 +1,13 @@
+---
+name: "sqlite3"
+sqlite3_steps:
+  - download_software
+  - extract_software
+  - build_software
+sqlite3_version: "3.40.1"
+sqlite3_file: "version-{{ sqlite3_version }}.tar.gz"
+sqlite3_source: "https://github.com/sqlite/sqlite/archive/refs/tags/{{ sqlite3_file }}"
+
+sqlite3_description: "sqlite3 is a C library that provides a lightweight disk-based database that doesn't require a separate server process and allows accessing the database using a nonstandard variant of SQL query language."
+sqlite3_website: "https://sqlite.org"
+sqlite3_testing_cmd: "sqlite3 --help"
