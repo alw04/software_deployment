@@ -1,5 +1,6 @@
 ---
-- include_tasks: core.yml
+- name: "Begin install for {{ name }}"
+  include_tasks: core.yml
 
 - block:
   - name: "Include software steps for {{ name }}"

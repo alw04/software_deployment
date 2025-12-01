@@ -1,14 +1,8 @@
 ---
 - block:
-  - name: "Set up download variables for {{ name }}"
+  - name: "Set download file for {{ name }}"
     set_fact:
-      "{{ name }}_{{ suffix }}": "{{ lookup('vars', name ~ '_' ~ suffix) }}"
-    loop:
-      - file
-      - source
-    loop_control:
-      loop_var: suffix
-    when: vars.get(name ~ '_' ~ suffix)
+      "{{ name }}_file": "{{ lookup('vars', name ~ '_source') | basename }}"
 
   - name: "Set download path for {{ name }}"
     set_fact:
