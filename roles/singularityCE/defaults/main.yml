@@ -4,9 +4,8 @@ singularityCE_steps:
   - download_software
   - extract_software
   - build_software
-singularityCE_version: "3.11.4"
-singularityCE_file: "singularity-ce-{{ singularityCE_version }}.tar.gz"
-singularityCE_source: "https://github.com/sylabs/singularity/releases/download/v{{ singularityCE_version }}/{{ singularityCE_file }}"
+singularityCE_default_version: "3.11.4"
+singularityCE_version: "{{ singularityCE_default_version }}"
 singularityCE_build_env:
   PATH: "{{ go_install_path }}/bin:{{ ansible_env.PATH }}"
   CFLAGS: "-I{{ libseccomp_install_path }}/include"

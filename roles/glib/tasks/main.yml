@@ -1,0 +1,2 @@
+---
+- include_tasks: "versions/{{ glib_version }}.yml"

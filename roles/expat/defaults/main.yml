@@ -4,9 +4,8 @@ expat_steps:
   - download_software
   - extract_software
   - build_software
-expat_version: "2.7.3"
-expat_file: "expat-{{ expat_version }}.tar.gz"
-expat_source: "https://github.com/libexpat/libexpat/releases/download/R_2_7_3/{{ expat_file }}"
+expat_default_version: "2.7.3"
+expat_version: "{{ expat_default_version }}"
 
 expat_description: "Expat is a stream-oriented parser in which an application registers handlers for things the parser might find in the XML document (like start tags)."
 expat_website: "https://libexpat.github.io"

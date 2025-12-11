@@ -4,9 +4,8 @@ texinfo_steps:
   - download_software
   - extract_software
   - build_software
-texinfo_version: "7.0"
-texinfo_file: "texinfo-{{ texinfo_version }}.tar.gz"
-texinfo_source: "https://ftp.gnu.org/gnu/texinfo/{{ texinfo_file }}"
+texinfo_default_version: "7.0"
+texinfo_version: "{{ texinfo_default_version }}"
 texinfo_build_env:
   PATH: "{{ perl_install_path }}/bin:{{ ansible_env.PATH }}"
 

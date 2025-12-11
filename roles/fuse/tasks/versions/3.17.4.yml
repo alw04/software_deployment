@@ -1,0 +1,6 @@
+---
+- include_role:
+    name: software_install
+  vars:
+    fuse_version: "3.17.4"
+    fuse_source: "https://github.com/libfuse/libfuse/releases/download/fuse-3.17.4/fuse-3.17.4.tar.gz"

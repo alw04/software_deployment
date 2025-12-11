@@ -1,0 +1,11 @@
+---
+- include_role:
+    name: tcl
+  vars:
+    tcl_version: "8.6.13"
+
+- include_role:
+    name: software_install
+  vars:
+    tk_version: "8.6.13"
+    tk_source: "http://prdownloads.sourceforge.net/tcl/tk8613-src.zip"

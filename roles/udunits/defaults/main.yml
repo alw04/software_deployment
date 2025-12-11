@@ -4,9 +4,8 @@ udunits_steps:
   - download_software
   - extract_software
   - build_software
-udunits_version: "2.2.28"
-udunits_file: "udunits-{{ udunits_version }}.tar.gz"
-udunits_source: "https://downloads.unidata.ucar.edu/udunits/{{ udunits_version }}/{{ udunits_file }}"
+udunits_default_version: "2.2.28"
+udunits_version: "{{ udunits_default_version }}"
 udunits_build_env:
   PKG_CONFIG_PATH: "{{ expat_install_path }}/lib/pkgconfig"
   CFLAGS: "-I{{ expat_install_path }}/include"

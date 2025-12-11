@@ -1,0 +1,9 @@
+---
+# - include_role:
+#     name: gnutls
+
+- include_role:
+    name: software_install
+  vars:
+    wget_version: "1.21.3"
+    wget_source: "https://ftp.gnu.org/gnu/wget/wget-1.21.3.tar.gz"

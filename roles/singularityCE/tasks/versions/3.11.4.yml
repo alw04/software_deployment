@@ -1,0 +1,18 @@
+---
+- include_role:
+    name: go
+
+- include_role:
+    name: libseccomp
+
+- include_role:
+    name: pcre2
+
+# - include_role:
+#     name: glib  # built OK, but Singularity wouldn’t pick it up; using system version
+
+- include_role:
+    name: software_install
+  vars:
+    singularityCE_version: "3.11.4"
+    singularityCE_source: "https://github.com/sylabs/singularity/releases/download/v3.11.4/singularity-ce-3.11.4.tar.gz"

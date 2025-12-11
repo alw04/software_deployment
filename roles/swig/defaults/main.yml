@@ -4,9 +4,8 @@ swig_steps:
   - download_software
   - extract_software
   - build_software
-swig_version: "4.1.1"
-swig_file: "swig-{{ swig_version }}.tar.gz"
-swig_source: "https://sourceforge.net/projects/swig/files/swig/swig-{{ swig_version }}/{{ swig_file }}"
+swig_default_version: "4.1.1"
+swig_version: "{{ swig_default_version }}"
 swig_build_env:
   PATH: "{{ pcre2_install_path }}/bin:{{ ansible_env.PATH }}"
 

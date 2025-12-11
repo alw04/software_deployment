@@ -1,5 +1,7 @@
 ---
 name: "virtualenv"
+virtualenv_default_version: "latest"
+virtualenv_version: "{{ virtualenv_default_version }}"
 virtualenv_steps:
   - create_venv
 

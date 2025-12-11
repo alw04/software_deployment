@@ -1,0 +1,15 @@
+---
+name: "glib"
+glib_steps:
+  - download_software
+  - extract_software
+  - build_software
+glib_default_version: "2.87.0"
+glib_version: "{{ glib_default_version }}"
+glib_build_system: "meson"
+glib_build_env:
+  PKG_CONFIG_PATH: "{{ pcre2_install_path }}/lib/pkgconfig"
+glib_build_configure_cmd: "{{ meson_install_path }}/bin/meson setup build --prefix={{ glib_install_path }}"
+
+glib_description: "GLib is a general-purpose, portable utility library, which provides many useful data types, macros, type conversions, string utilities, file utilities, a mainloop abstraction, and so on."
+glib_website: "https://www.gtk.org"

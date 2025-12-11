@@ -1,0 +1,13 @@
+---
+name: "fuse"
+fuse_steps:
+  - download_software
+  - extract_software
+  - build_software
+fuse_default_version: "3.17.4"
+fuse_version: "{{ fuse_default_version }}"
+fuse_build_system: "meson"
+
+fuse_description: "The reference implementation of the Linux FUSE (Filesystem in Userspace) interface"
+fuse_website: "https://github.com/libfuse/libfuse"
+fuse_testing_cmd: "fusermount3 --help"

@@ -4,9 +4,8 @@ xz_steps:
   - download_software
   - extract_software
   - build_software
-xz_version: "5.4.1"
-xz_file: "xz-{{ xz_version }}.tar.gz"
-xz_source: "https://tukaani.org/xz/{{ xz_file }}"
+xz_default_version: "5.4.1"
+xz_version: "{{ xz_default_version }}"
 
 xz_description: |
   xz is a general-purpose, command line data compression utility, similar to gzip and bzip2.

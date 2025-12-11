@@ -1,0 +1,8 @@
+---
+- include_role:
+    name: software_install
+  vars:
+    sqlite_version: "3.40.1"
+    sqlite_source: "https://github.com/sqlite/sqlite/archive/refs/tags/version-3.40.1.tar.gz"
+
+    sqlite_testing_cmd: "sqlite3 --help"

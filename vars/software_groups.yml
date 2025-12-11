@@ -1,19 +1,31 @@
 ---
 software_groups_mapping:
   common:
-    - tmux
-    - virtualenv
-    - python_3
-    - zlib
-    - xz
-    - wget
     - expat
-    - udunits
-    - fuse3
-    - squashfuse
-    - perl
+    - fuse
+    - glib
+    - go
+    - gperf
+    - libseccomp
+    - meson
+    - miniconda
+    - ninja
     - pcre2
+    - perl
+    - python
+    - singularityCE
+    - snakemake
+    - sparsehash
+    - sqlite
+    - squashfuse
     - swig
+    - tbb
     - tcl
-    - tk
     - texinfo
+    - tk
+    - tmux
+    - udunits
+    - virtualenv
+    - wget
+    - xz
+    - zlib

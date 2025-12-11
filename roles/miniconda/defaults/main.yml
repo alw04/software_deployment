@@ -1,8 +1,7 @@
 ---
 name: "miniconda"
-miniconda_version: "4.12.0"
-miniconda_file: "Miniconda3-latest-Linux-x86_64.sh"
-miniconda_source: "https://repo.anaconda.com/miniconda/{{ miniconda_file }}"
+miniconda_default_version: "4.12.0"
+miniconda_version: "{{ miniconda_default_version }}"
 
 miniconda_description: |
   Miniconda is a free minimal installer for conda.

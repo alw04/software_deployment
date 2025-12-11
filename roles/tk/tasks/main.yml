@@ -1,3 +1,2 @@
 ---
-- include_role:
-    name: software_install
+- include_tasks: "versions/{{ tk_version }}.yml"

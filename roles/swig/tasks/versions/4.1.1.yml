@@ -1,0 +1,11 @@
+---
+- include_role:
+    name: pcre2
+  vars:
+    pcre2_version: "10.47"
+
+- include_role:
+    name: software_install
+  vars:
+    swig_version: "4.1.1"
+    swig_source: "https://sourceforge.net/projects/swig/files/swig/swig-4.1.1/swig-4.1.1.tar.gz"

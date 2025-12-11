@@ -4,9 +4,8 @@ sparsehash_steps:
   - download_software
   - extract_software
   - build_software
-sparsehash_version: "2.0.4"
-sparsehash_file: "sparsehash-{{ sparsehash_version }}.tar.gz"
-sparsehash_source: "https://github.com/sparsehash/sparsehash/archive/{{ sparsehash_file }}"
+sparsehash_default_version: "2.0.4"
+sparsehash_version: "{{ sparsehash_default_version }}"
 
 sparsehash_description: "sparsehash is an extremely memory-efficient hash map implementation."
 sparsehash_website: "https://goog-sparsehash.sourceforge.net"

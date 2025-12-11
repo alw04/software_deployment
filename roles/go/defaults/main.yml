@@ -4,9 +4,8 @@ go_steps:
   - download_software
   - extract_software
   - install_prebuilt
-go_version: "1.20.6"
-go_file: "go{{ go_version }}.linux-amd64.tar.gz"
-go_source: "https://go.dev/dl/{{ go_file }}"
+go_default_version: "1.20.6"
+go_version: "{{ go_default_version }}"
 
 go_description: "go is an open-source programming language supported by Google"
 go_testing_cmd: "go version"
