@@ -1,0 +1,12 @@
+---
+name: "tbb"
+tbb_steps:
+  - download_software
+  - extract_software
+  - build_software
+tbb_default_version: "2022.3.0"
+tbb_version: "{{ tbb_default_version }}"
+tbb_build_system: "cmake"
+
+tbb_website: "https://uxlfoundation.github.io/oneTBB"
+tbb_description: "oneTBB is a flexible C++ library that simplifies the work of adding parallelism to complex applications, even if you are not a threading expert."

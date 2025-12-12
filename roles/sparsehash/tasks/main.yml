@@ -1,0 +1,2 @@
+---
+- include_tasks: "versions/{{ sparsehash_version }}.yml"

@@ -1,0 +1,2 @@
+---
+- include_tasks: "versions/{{ texinfo_version }}.yml"

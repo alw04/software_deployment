@@ -1,0 +1,6 @@
+---
+- include_role:
+    name: software_install
+  vars:
+    gperf_version: "3.3"
+    gperf_source: "http://ftp.gnu.org/pub/gnu/gperf/gperf-3.3.tar.gz"

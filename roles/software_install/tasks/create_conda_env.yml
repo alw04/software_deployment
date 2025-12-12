@@ -1,0 +1,10 @@
+---
+- block:
+  - name: "Create conda environment for {{ name }}"
+    command: "{{ miniconda_install_path }}/bin/conda create --prefix {{ vars.get(name ~ '_install_path') }} -c conda-forge mamba -y --force"
+
+  - name: "Install {{ name }} into conda environment"
+    command: "{{ vars.get(name ~ '_install_path') }}/bin/mamba install -c bioconda -c conda-forge {{ name }}{{ version_suffix}} -y"
+    vars:
+      version_suffix: "{{ '=' ~ vars.get(name ~ '_version') if vars.get(name ~ '_version') not in ['latest', '', None] else '' }}"
+  when: not vars.get(name ~ '_skip')

@@ -1,0 +1,16 @@
+---
+name: "udunits"
+udunits_steps:
+  - download_software
+  - extract_software
+  - build_software
+udunits_default_version: "2.2.28"
+udunits_version: "{{ udunits_default_version }}"
+udunits_build_env:
+  PKG_CONFIG_PATH: "{{ expat_install_path }}/lib/pkgconfig"
+  CFLAGS: "-I{{ expat_install_path }}/include"
+  LDFLAGS: "-L{{ expat_install_path }}/lib"
+
+udunits_description: "The UDUNITS package from Unidata is a C-based package for the programatic handling of units of physical quantities."
+udunits_website: "http://www.unidata.ucar.edu/downloads/udunits/index.jsp"
+udunits_testing_cmd: "udunits2"

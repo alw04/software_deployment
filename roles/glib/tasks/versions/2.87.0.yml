@@ -1,0 +1,12 @@
+---
+- include_role:
+    name: meson
+
+- include_role:
+    name: pcre2
+
+- include_role:
+    name: software_install
+  vars:
+    glib_version: "2.87.0"
+    glib_source: "https://download.gnome.org/sources/glib/2.87/glib-2.87.0.tar.xz"

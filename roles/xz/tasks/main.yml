@@ -1,0 +1,2 @@
+---
+- include_tasks: "versions/{{ xz_version }}.yml"

@@ -1,0 +1,14 @@
+---
+name: "texinfo"
+texinfo_steps:
+  - download_software
+  - extract_software
+  - build_software
+texinfo_default_version: "7.0"
+texinfo_version: "{{ texinfo_default_version }}"
+texinfo_build_env:
+  PATH: "{{ perl_install_path }}/bin:{{ ansible_env.PATH }}"
+
+texinfo_description: "Texinfo uses a single source file to produce output in a number of formats, both online and printed (HTML, PDF, DVI, Info, DocBook, LaTeX, EPUB 3). This means that instead of writing different documents for online information and another for a printed manual, you need write only one document. The Texinfo system is well-integrated with GNU Emacs."
+texinfo_website: "https://www.gnu.org/software/texinfo"
+texinfo_testing_cmd: "info -h"

@@ -1,0 +1,6 @@
+---
+- include_role:
+    name: software_install
+  vars:
+    python_version: "3.9.18"
+    python_source: "https://www.python.org/ftp/python/3.9.18/Python-3.9.18.tgz"

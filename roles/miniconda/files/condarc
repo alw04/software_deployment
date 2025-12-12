@@ -1,0 +1,11 @@
+default_channels:
+  - https://conda.anaconda.org/conda-forge
+
+channels:
+  - conda-forge
+  - bioconda
+
+show_channel_urls: True
+allow_other_channels: False
+auto_update_conda: False
+auto_activate_base: False

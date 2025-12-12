@@ -1,0 +1,10 @@
+---
+- include_role:
+    name: python
+  vars:
+    python_version: "3.9.18"
+
+- include_role:
+    name: software_install
+  vars:
+    meson_version: "latest"

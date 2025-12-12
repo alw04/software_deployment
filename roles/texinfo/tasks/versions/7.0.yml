@@ -1,0 +1,11 @@
+---
+- include_role:
+    name: perl
+  vars:
+    perl_version: "5.36.0"
+
+- include_role:
+    name: software_install
+  vars:
+    texinfo_version: "7.0"
+    texinfo_source: "https://ftp.gnu.org/gnu/texinfo/texinfo-7.0.tar.gz"

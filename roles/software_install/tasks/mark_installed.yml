@@ -1,0 +1,5 @@
+---
+- name: "Mark {{ name }} as installed"
+  set_fact:
+    software_done: "{{ software_done + [name ~ '/' ~ vars.get(name ~ '_version')] if name not in software_done else software_done }}"
+  when: not vars.get(name ~ '_skip')

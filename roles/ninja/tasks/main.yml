@@ -1,0 +1,2 @@
+---
+- include_tasks: "versions/{{ ninja_version }}.yml"

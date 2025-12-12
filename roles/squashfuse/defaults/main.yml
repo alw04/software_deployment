@@ -1,0 +1,16 @@
+---
+name: "squashfuse"
+squashfuse_steps:
+  - download_software
+  - extract_software
+  - build_software
+squashfuse_default_version: "0.5.2"
+squashfuse_version: "{{ squashfuse_default_version }}"
+squashfuse_build_env:
+  PKG_CONFIG_PATH: "{{ fuse_install_path }}/lib64/pkgconfig"
+
+squashfuse_description: "FUSE filesystem to mount squashfs archives"
+squashfuse_website: "https://github.com/vasi/squashfuse"
+squashfuse_testing_cmd: "squashfuse --help"
+squashfuse_depends_on:
+  - fuse

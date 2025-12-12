@@ -1,0 +1,9 @@
+---
+name: "snakemake"
+snakemake_steps:
+  - create_conda_env
+snakemake_version: "latest"
+
+snakemake_website: "https://snakemake.readthedocs.io/en/stable"
+snakemake_description: "The Snakemake workflow management system is a tool to create reproducible and scalable data analyses."
+snakemake_testing_cmd: "snakemake --help"

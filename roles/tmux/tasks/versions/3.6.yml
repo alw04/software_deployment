@@ -1,0 +1,6 @@
+---
+- include_role:
+    name: software_install
+  vars:
+    tmux_version: "3.6"
+    tmux_source: "https://github.com/tmux/tmux/releases/download/3.6/tmux-3.6.tar.gz"

@@ -1,0 +1,10 @@
+---
+name: "virtualenv"
+virtualenv_default_version: "latest"
+virtualenv_version: "{{ virtualenv_default_version }}"
+virtualenv_steps:
+  - create_venv
+
+virtualenv_description: "virtualenv is a tool to create isolated Python environments."
+virtualenv_website: "https://virtualenv.pypa.io/en/latest"
+virtualenv_testing_cmd: "virtualenv"

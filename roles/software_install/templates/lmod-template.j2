@@ -1,0 +1,70 @@
+local modulefile_template = loadfile("{{ lmod_template_path }}")()
+
+modulefile_template({
+  {% if name %}
+  name = "{{ name }}",
+  {% endif -%}
+  {% if vars.get(name ~ '_version') %}
+  version = "{{ vars.get(name ~ '_version') }}",
+  {% endif -%}
+  {% if vars.get(name ~ '_install_path') %}
+  install_path = "{{ vars.get(name ~ '_install_path') }}",
+  {% endif -%}
+  {% if vars.get(name ~ '_description') %}
+  description = "{{ vars.get(name ~ '_description') | trim | replace('\n', '\\n\t\t\t\t   ') }}",
+  {% endif -%}
+  {% if vars.get(name ~ '_usage_notes') %}
+  usage_notes = "{{ vars.get(name ~ '_usage_notes') }}",
+  {% endif -%}
+  {% if vars.get(name ~ '_testing_cmd') %}
+  testing = "{{ vars.get(name ~ '_testing_cmd') }}",
+  {% endif -%}
+  {% if vars.get(name ~ '_website') %}
+  website = "{{ vars.get(name ~ '_website') }}",
+  {% endif -%}
+  {% if vars.get(name ~ '_source') %}
+  source = "{{ lookup('vars', name ~ '_source') }}",
+  {% endif -%}
+  {% if vars.get(name ~ '_depends_on') %}
+  required_modules = {
+    {% for module in vars.get(name ~ '_depends_on') %}
+    "{{ module }}"{% if not loop.last %},{% endif -%}
+    {% endfor -%}
+  },
+  {% endif -%}
+  {% if vars.get(name ~ '_prepend_paths') %}
+  prepend_paths = {
+    {% for key, value in vars.get(name ~ '_prepend_path').items() %}
+    {{ key }} = "{{ value }}"{% if not loop.last %},{% endif -%}
+    {% endfor -%}
+  },
+  {% endif -%}
+  {% if vars.get(name ~ '_env_vars') %}
+  env_vars = {
+    {% for key, value in vars.get(name ~ '_env_var').items() %}
+    {{ key }} = "{{ value }}"{% if not loop.last %},{% endif -%}
+    {% endfor -%}
+  },
+  {% endif -%}
+  {% if vars.get(name ~ '_shell_functions') %}
+  shell_functions = {
+    {% for func in vars.get(name ~ '_shell_functions') %}
+    "{{ func }}"{% if not loop.last %},{% endif -%}
+    {% endfor -%}
+  },
+  {% endif -%}
+  {% if vars.get(name ~ '_conflicts') %}
+  conflicts = {
+    {% for module in vars.get(name ~ '_conflicts') %}
+    "{{ module }}"{% if not loop.last %},{% endif -%}
+    {% endfor -%}
+  },
+  required_modules = {
+    {% for module in depends_on %}
+    "{{ module }}"{% if not loop.last %},{% endif -%}
+    {% endfor -%}
+  },
+  {% endif -%}
+  built_by = "{{ vars.get(name ~ '_built_by', 'IASTATE') }}",
+  build_date = "{{ vars.get(name ~ '_build_date', ansible_date_time.date) }}",
+})

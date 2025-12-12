@@ -1,0 +1,2 @@
+---
+- include_tasks: "versions/{{ wget_version }}.yml"

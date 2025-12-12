@@ -1,0 +1,13 @@
+---
+name: "miniconda"
+miniconda_default_version: "latest"
+miniconda_version: "{{ miniconda_default_version }}"
+miniconda_steps:
+  - download_software
+  - roles/miniconda/tasks/install_miniconda
+
+miniconda_description: |
+  Miniconda is a free minimal installer for conda.
+  Miniconda is a small bootstrap version of Anaconda that includes only conda, Python, their dependencies, and a small number of other useful packages.
+miniconda_website: "https://www.anaconda.com/docs/getting-started/miniconda/main"
+miniconda_testing_cmd: "conda --help"

@@ -1,0 +1,14 @@
+---
+- block:
+  - name: "Create virtualenv for {{ name }}"
+    vars:
+      python_major: "{{ python_version.split('.')[0] }}"
+    command: "{{ python_install_path }}/bin/python{{ python_major }} -m venv {{ vars.get(name ~ '_install_path') }}"
+
+  - name: "Install {{ name }} into virtualenv"
+    pip:
+      executable: "{{ vars.get(name ~ '_install_path') }}/bin/pip"
+      name: "{{ name }}"
+      state: "{{ 'latest' if vars.get(name ~ '_version') == 'latest' else 'present' }}"
+      version: "{{ vars.get(name ~ '_version') if vars.get(name ~ '_version') not in ['latest',''] else omit }}"
+  when: not vars.get(name ~ '_skip')

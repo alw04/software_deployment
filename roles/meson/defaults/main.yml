@@ -1,0 +1,8 @@
+---
+name: "meson"
+meson_steps:
+  - create_venv
+meson_default_version: "latest"
+meson_version: "{{ meson_default_version }}"
+
+meson_testing_cmd: "meson --help"

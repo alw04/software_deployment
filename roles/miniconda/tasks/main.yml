@@ -1,0 +1,2 @@
+
+- include_tasks: "versions/{{ miniconda_version }}.yml"

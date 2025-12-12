@@ -1,0 +1,2 @@
+---
+- include_tasks: "versions/{{ pcre2_version }}.yml"

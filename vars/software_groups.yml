@@ -1,0 +1,31 @@
+---
+software_groups_mapping:
+  common:
+    - expat
+    - fuse
+    - glib
+    - go
+    - gperf
+    - libseccomp
+    - meson
+    - miniconda
+    - ninja
+    - pcre2
+    - perl
+    - python
+    - singularityCE
+    - snakemake
+    - sparsehash
+    - sqlite
+    - squashfuse
+    - swig
+    - tbb
+    - tcl
+    - texinfo
+    - tk
+    - tmux
+    - udunits
+    - virtualenv
+    - wget
+    - xz
+    - zlib

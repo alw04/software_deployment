@@ -12,12 +12,9 @@ return function(M)
     local defaults = {
         name = nil,
         version = nil,
-        base = nil,
+        install_path = nil,
         description = nil,
         usage_notes = "",
-        libraries_used = "",
-        packages_used = "",
-        optional_packages = "none",
         testing = "",
         website = nil,
         source = nil,
@@ -65,46 +62,55 @@ return function(M)
         end
     end
 
-    -- Determine base install path
-    M.base = M.base or
+    -- Determine install path
+    M.install_path = M.install_path or
         (module_path:match("/software/el9/modulefiles/") and pathJoin("/software/el9/apps", M.name, M.version)) or
         (module_path:match("/reference/containers/modulefiles/") and pathJoin("/reference/containers", M.name, M.version))
 
     if mode() == "load" then
-        if not M.base then
-            LmodError("Installation directory could not be determined! Set M.base explicitly or fix modulefile path.")
-        elseif not isDir(M.base) then
-            LmodError(("Installation directory does not exist: %s"):format(M.base))
+        if not M.install_path then
+            LmodError("Installation directory could not be determined! Set M.install_path explicitly or fix modulefile path.")
+        elseif not isDir(M.install_path) then
+            LmodError(("Installation directory does not exist: %s"):format(M.install_path))
         end
     end
 
-    -- Prepend standard subdirectories if they exist
-    if mode() == "load" and M.base then
-        local dir_env_map = {
-            bin = {"PATH"},
-            include = {"CPATH", "CMAKE_INCLUDE_PATH"},
-            lib = {"LIBRARY_PATH", "LD_LIBRARY_PATH", "CMAKE_LIBRARY_PATH"},
-            lib64 = {"LIBRARY_PATH", "LD_LIBRARY_PATH", "CMAKE_LIBRARY_PATH"},
-            man = {"MANPATH"},
-            ["share/man"] = {"MANPATH"},
-            ["site-packages"] = {"PYTHONPATH"}
-        }
+    local dir_env_map = {
+        bin = {"PATH"},
+        include = {"CPATH", "CMAKE_INCLUDE_PATH"},
+        lib = {"LIBRARY_PATH", "LD_LIBRARY_PATH", "CMAKE_LIBRARY_PATH"},
+        lib64 = {"LIBRARY_PATH", "LD_LIBRARY_PATH", "CMAKE_LIBRARY_PATH"},
+        man = {"MANPATH"},
+        ["share/man"] = {"MANPATH"},
+        ["site-packages"] = {"PYTHONPATH"}
+    }
 
+    if M.install_path then
         for subdir, env_vars in pairs(dir_env_map) do
-            local full_path = pathJoin(M.base, subdir)
+            local full_path = pathJoin(M.install_path, subdir)
             if isDir(full_path) then
-                for _, var in ipairs(env_vars) do
-                    prepend_path(var, full_path)
+                if mode() == "load" then
+                    for _, var in ipairs(env_vars) do
+                        prepend_path(var, full_path)
+                    end
+                elseif mode() == "unload" then
+                    for _, var in ipairs(env_vars) do
+                        remove_path(var, full_path)
+                    end
                 end
             end
         end
     end
 
     -- Add custom paths if provided
-    if mode() == "load" and M.prepend_paths then
+    if next(M.prepend_paths) then
         for var, value in pairs(M.prepend_paths) do
             if isDir(value) then
-                prepend_path(var, value)
+                if mode() == "load" then
+                    prepend_path(var, value)
+                elseif mode() == "unload" then
+                    remove_path(var, value)
+                end
             elseif mode() == "load" then
                 LmodWarning(("Path does not exist: %s"):format(value))
             end
@@ -112,21 +118,25 @@ return function(M)
     end
 
     -- Set any module-specific environment variables
-    if mode() == "load" and M.env_vars then
+    if next(M.env_vars) then
         for var, value in pairs(M.env_vars) do
-            setenv(var, value)
+            if mode() == "load" then
+                setenv(var, value)
+            elseif mode() == "unload" then
+                unsetenv(var)
+            end
         end
     end
 
     -- Set any module-specific conflicts
-    if mode() == "load" and M.conflicts then
+    if mode() == "load" and next(M.conflicts) then
         for _, module in ipairs(M.conflicts) do
             conflict(module)
         end
     end
 
     -- Load any module dependencies
-    if mode() == "load" and M.required_modules then
+    if mode() == "load" and next(M.required_modules) then
         for _, module in ipairs(M.required_modules) do
             if not isloaded(module) then
                 if not isAvail(module) then
@@ -142,7 +152,7 @@ return function(M)
     -- lmod normally handles this automatically with depends_on()
     -- but this may not work correctly using this script
     -- so the dependencies are managed manually
-    if mode() == "unload" and M.required_modules then
+    if mode() == "unload" and next(M.required_modules) then
         for _, module in ipairs(M.required_modules) do
             if isloaded(module) then
                 unload(module)
@@ -152,7 +162,7 @@ return function(M)
     end
 
     -- Create shell functions for containers
-    if mode() == "load" and M.shell_functions then
+    if mode() == "load" and next(M.shell_functions) then
         if not isloaded("apptainer") then
             depends_on("apptainer")
         end
@@ -195,21 +205,13 @@ return function(M)
 %s
 %s
 
-%sLibraries Used:%s
----------------
-%s
-
-%sPackages Used:%s
---------------
-%s
-
-%sOptional Packages:%s
-------------------
+%sDepends On:%s
+-----------
 %s
 
 %sTesting:%s
 --------
-$ module load %s/%s
+module load %s/%s
 %s
 
 --
@@ -226,14 +228,8 @@ $ module load %s/%s
     M.name,
     M.usage_notes,
 
-    cyan, reset, -- Libraries Used
-    M.libraries_used,
-
-    cyan, reset, -- Packages Used
-    M.packages_used,
-
-    cyan, reset, -- Optional Packages
-    M.optional_packages,
+    cyan, reset, -- Depends On
+    table.concat(M.required_modules, "\n"),
 
     cyan, reset, -- Testing
     M.name, M.version,

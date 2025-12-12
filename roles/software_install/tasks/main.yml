@@ -1,0 +1,13 @@
+---
+- name: "Begin install for {{ name }}"
+  include_tasks: core.yml
+
+- block:
+  - name: "Include software steps for {{ name }}"
+    include_tasks: "{{ task }}.yml"
+    loop: "{{ vars.get(name ~ '_steps', []) }}"
+    loop_control:
+      loop_var: task
+
+  - include_tasks: mark_installed.yml
+  when: not vars.get(name ~ '_skip')
