@@ -1,0 +1,6 @@
+---
+- name: "Add build config file"
+  template:
+    src: rust.config.toml.j2
+    dest: "{{ rust_build_path }}/config.toml"
+    mode: "0644"

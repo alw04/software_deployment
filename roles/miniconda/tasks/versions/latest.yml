@@ -1,0 +1,6 @@
+---
+- include_role:
+    name: software_install
+  vars:
+    miniconda_version: "latest"
+    miniconda_source: "https://repo.anaconda.com/miniconda/Miniconda3-latest-Linux-x86_64.sh"

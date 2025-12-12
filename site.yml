@@ -32,6 +32,7 @@
 
     software_done: []
     software_failed: []
+    software_skipped: []
 
   tasks:
     - name: "Fail if invalid software groups are provided"
@@ -80,5 +81,5 @@
           Software installation summary for host {{ inventory_hostname }}:
 
             Installed: {{ software_done | length }} -> {{ software_done | join(', ') }}
-            Skipped: {{ (software_to_install | difference(software_done + software_failed)) | length }} -> {{ (software_to_install | difference(software_done + software_failed)) | join(', ') }}
+            Skipped: {{ software_skipped | length }} -> {{ software_skipped | join(', ') }}
             Failed: {{ software_failed | length }} -> {{ software_failed | join(', ') }}

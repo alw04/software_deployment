@@ -1,3 +1,4 @@
+---
 - block:
     - name: "Run role for {{ software_name }}"
       include_role:
@@ -5,8 +6,28 @@
   rescue:
     - name: "Track failure for {{ software_name }}"
       set_fact:
-        software_failed: "{{ software_failed + [software_name] }}"
+        software_failed: >-
+          {{
+            software_failed + [software_name ~ '/' ~ vars.get(software_name ~ '_version')
+            if vars.get(software_name ~ '_version') is defined
+            else software_name] | unique
+          }}
   always:
-    - name: "Track success for {{ software_name }}"
+    - name: "Track status for {{ software_name }}"
       set_fact:
-        software_done: "{{ software_done + [software_name] if software_name not in software_failed and not vars.get(software_name ~ '_skip', false) and software_name not in software_done else software_done }}"
+        software_done: >-
+          {{
+            software_done + [software_name ~ '/' ~ vars.get(software_name ~ '_version')]
+            if not vars.get(software_name ~ '_skip', false)
+            and (software_name ~ '/' ~ vars.get(software_name ~ '_version')) not in software_done
+            and (software_name ~ '/' ~ vars.get(software_name ~ '_version')) not in software_failed
+            else software_done
+          }}
+        software_skipped: >-
+          {{
+            software_skipped + [software_name ~ '/' ~ vars.get(software_name ~ '_version')]
+            if vars.get(software_name ~ '_skip', false)
+            and (software_name ~ '/' ~ vars.get(software_name ~ '_version')) not in software_skipped
+            and (software_name ~ '/' ~ vars.get(software_name ~ '_version')) not in software_failed
+            else software_skipped
+          }}

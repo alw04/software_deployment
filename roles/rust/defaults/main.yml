@@ -1,0 +1,16 @@
+---
+name: "rust"
+rust_default_version: "1.92.0"
+rust_version: "{{ rust_default_version }}"
+rust_steps:
+  - download_software
+  - extract_software
+  - roles/rust/tasks/copy_config
+  - build_software
+rust_build_configure_cmd: "/bin/true"
+rust_build_make_cmd: "./x.py build"
+rust_build_install_cmd: "./x.py install"
+
+rust_website: "https://rust-lang.org"
+rust_description: "Rust is blazingly fast and memory-efficient: with no runtime or garbage collector, it can power performance-critical services, run on embedded devices, and easily integrate with other languages."
+rust_test_cmd: "rust -V"
