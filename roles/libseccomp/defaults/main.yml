@@ -1,11 +1,10 @@
 ---
 name: "libseccomp"
 libseccomp_steps:
-  - download_software
-  - extract_software
-  - build_software
+  - download
+  - extract
+  - build
 libseccomp_default_version: "2.6.0"
-libseccomp_version: "{{ libseccomp_default_version }}"
 libseccomp_build_env:
   PATH: "{{ gperf_install_path }}/bin:{{ ansible_env.PATH }}"
 

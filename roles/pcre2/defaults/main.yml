@@ -1,11 +1,10 @@
 ---
 name: "pcre2"
 pcre2_steps:
-  - download_software
-  - extract_software
-  - build_software
+  - download
+  - extract
+  - build
 pcre2_default_version: "10.47"
-pcre2_version: "{{ pcre2_default_version }}"
 
 pcre2_website: "https://pcre2project.github.io/pcre2"
 pcre2_description: "The PCRE2 library is a set of C functions that implement regular expression pattern matching."

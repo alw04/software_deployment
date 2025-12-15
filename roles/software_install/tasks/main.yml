@@ -1,9 +1,9 @@
 ---
-- name: "Begin install for {{ name }}"
+- name: "Begin install for {{ name }}/{{ vars.get(name ~ '_version', vars.get(name ~ '_default_version')) }}"
   include_tasks: core.yml
 
 - block:
-  - name: "Include software steps for {{ name }}"
+  - name: "Include software steps for {{ name }}/{{ vars[name ~ '_version'] }}"
     include_tasks: "{{ task }}.yml"
     loop: "{{ vars.get(name ~ '_steps', []) }}"
     loop_control:

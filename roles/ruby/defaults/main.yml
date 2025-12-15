@@ -1,11 +1,10 @@
 ---
 name: "ruby"
 ruby_default_version: "3.2.1"
-ruby_version: "{{ ruby_default_version }}"
 ruby_steps:
-  - download_software
-  - extract_software
-  - build_software
+  - download
+  - extract
+  - build
 
 ruby_website: "https://www.ruby-lang.org/en"
 ruby_description: "A dynamic, open source programming language with a focus on simplicity and productivity. It has an elegant syntax that is natural to read and easy to write."

@@ -1,0 +1,9 @@
+---
+name: "mpfr"
+mpfr_default_version: "4.2.0"
+mpfr_steps:
+  - download
+  - extract
+  - build
+mpfr_website: "https://www.mpfr.org"
+mpfr_description: "The MPFR library is a C library for multiple-precision floating-point computations with correct rounding."

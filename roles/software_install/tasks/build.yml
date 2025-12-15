@@ -1,0 +1,77 @@
+---
+- block:
+  - name: "Parse build variables for {{ name }}/{{ vars[name ~ '_version'] }}"
+    set_fact:
+      "{{ name }}_{{ suffix}}": >-
+        {{ lookup('vars', name ~ '_' ~ suffix) }}
+    loop:
+      - build_configure_cmd
+      - build_make_cmd
+      - build_install_cmd
+      - build_configure_flags
+      - build_make_flags
+      - build_install_flags
+      - build_env
+      - build_dir
+    loop_control:
+      loop_var: suffix
+    when: vars.get(name ~ '_' ~ suffix)
+
+  - name: "Set build system for {{ name }}/{{ vars[name ~ '_version'] }}"
+    set_fact:
+      "{{ name }}_build_system": >-
+        {{ vars.get(name ~ '_build_system', 'autotools') }}
+
+  - name: "Fail if build_system is invalid for {{ name }}/{{ vars[name ~ '_version'] }}"
+    fail:
+      msg: "Invalid build_system '{{ vars.get(name ~ '_build_system') }}'. Must be one of: cmake, autotools, make, meson."
+    when: vars[name ~ '_build_system'] not in ['cmake','autotools','make','meson']
+
+  - name: "Determine build commands for {{ name }}/{{ vars[name ~ '_version'] }}"
+    set_fact:
+      "{{ name }}_default_build_configure_cmd": >-
+        {% if vars[name ~ '_build_system'] == 'cmake' %}
+        cmake -B build -DCMAKE_INSTALL_PREFIX={{ vars[name ~ '_install_path'] }} {{ vars.get(name ~ '_build_configure_flags', '') }}
+        {% elif vars[name ~ '_build_system'] == 'autotools' %}
+        ./configure --prefix={{ vars[name ~ '_install_path'] }} {{ vars.get(name ~ '_build_configure_flags', '') }}
+        {% elif vars[name ~ '_build_system'] == 'make' %}
+        true
+        {% elif vars[name ~ '_build_system'] == 'meson' %}
+        meson setup build --prefix={{ vars[name ~ '_install_path'] }} {{ vars.get(name ~ '_build_configure_flags', '') }}
+        {% endif %}
+      "{{ name }}_default_build_make_cmd": >-
+        {% if vars[name ~ '_build_system'] == 'cmake' %}
+        cmake --build build -- -j {{ ansible_process_vcpus | default(4) }} {{ vars.get(name ~ '_build_make_flags', '') }}
+        {% elif vars[name ~ '_build_system'] in ['autotools','make'] %}
+        make -j {{ ansible_process_vcpus | default(4) }} {{ vars.get(name ~ '_build_make_flags', '') }}
+        {% elif vars[name ~ '_build_system'] == 'meson' %}
+        ninja -C build -j {{ ansible_process_vcpus | default(4) }} {{ vars.get(name ~ '_build_make_flags', '') }}
+        {% endif %}
+      "{{ name }}_default_build_install_cmd": >-
+        {% if vars[name ~ '_build_system'] == 'cmake' %}
+        cmake --install build {{ vars.get(name ~ '_build_install_flags', '') }}
+        {% elif vars[name ~ '_build_system'] in ['autotools','make'] %}
+        make install {{ vars.get(name ~ '_build_install_flags', '') }}
+        {% elif vars[name ~ '_build_system'] == 'meson' %}
+        ninja -C build install {{ vars.get(name ~ '_build_install_flags', '') }}
+        {% endif %}
+
+  - name: "Build {{ name }}/{{ vars[name ~ '_version'] }} - Configure"
+    command: "{{ vars.get(name ~ '_build_configure_cmd', vars[name ~ '_default_build_configure_cmd']) }}"
+    args:
+      chdir: "{{ vars.get(name ~ '_build_dir', vars[name ~ '_build_path']) }}"
+    environment: "{{ vars.get(name ~ '_build_env', {}) }}"
+    when: vars[name ~ '_build_system'] != 'make'
+
+  - name: "Build {{ name }}/{{ vars[name ~ '_version'] }} - Make"
+    command: "{{ vars.get(name ~ '_build_make_cmd', vars[name ~ '_default_build_make_cmd']) }}"
+    args:
+      chdir: "{{ vars.get(name ~ '_build_dir', vars[name ~ '_build_path']) }}"
+    environment: "{{ vars.get(name ~ '_build_env', {}) }}"
+
+  - name: "Build {{ name }}/{{ vars[name ~ '_version'] }} - Install"
+    command: "{{ vars.get(name ~ '_build_install_cmd', vars[name ~ '_default_build_install_cmd']) }}"
+    args:
+      chdir: "{{ vars.get(name ~ '_build_dir', vars[name ~ '_build_path']) }}"
+    environment: "{{ vars.get(name ~ '_build_env', {}) }}"
+  when: not vars[name ~ '_skip']

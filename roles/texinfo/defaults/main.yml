@@ -1,11 +1,10 @@
 ---
 name: "texinfo"
 texinfo_steps:
-  - download_software
-  - extract_software
-  - build_software
+  - download
+  - extract
+  - build
 texinfo_default_version: "7.0"
-texinfo_version: "{{ texinfo_default_version }}"
 texinfo_build_env:
   PATH: "{{ perl_install_path }}/bin:{{ ansible_env.PATH }}"
 

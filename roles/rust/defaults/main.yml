@@ -1,12 +1,11 @@
 ---
 name: "rust"
 rust_default_version: "1.92.0"
-rust_version: "{{ rust_default_version }}"
 rust_steps:
-  - download_software
-  - extract_software
+  - download
+  - extract
   - roles/rust/tasks/copy_config
-  - build_software
+  - build
 rust_build_configure_cmd: "/bin/true"
 rust_build_make_cmd: "./x.py build"
 rust_build_install_cmd: "./x.py install"

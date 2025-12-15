@@ -1,11 +1,3 @@
--- Notes/Known Issues:
--- 1. .depends_on() will load dependent modules correctly, but unloading them
---    does not work properly in this script, so they are managed manually.
---
--- 2. load() does not behave as expected, anything that needs to be loaded
---    can be added directly to the software modulefile via ansible.
---    depends_on() should be used in most cases anyways to manage dependencies
-
 return function(M)
 
     -- Default values for the module
@@ -152,14 +144,14 @@ return function(M)
     -- lmod normally handles this automatically with depends_on()
     -- but this may not work correctly using this script
     -- so the dependencies are managed manually
-    if mode() == "unload" and next(M.required_modules) then
-        for _, module in ipairs(M.required_modules) do
-            if isloaded(module) then
-                unload(module)
-                LmodMessage(("Unloaded dependency module: %s"):format(module))
-            end
-        end
-    end
+    -- if mode() == "unload" and next(M.required_modules) then
+    --     for _, module in ipairs(M.required_modules) do
+    --         if isloaded(module) then
+    --             unload(module)
+    --             LmodMessage(("Unloaded dependency module: %s"):format(module))
+    --         end
+    --     end
+    -- end
 
     -- Create shell functions for containers
     if mode() == "load" and next(M.shell_functions) then

@@ -1,2 +1,2 @@
 ---
-- include_tasks: "versions/{{ ruby_version }}.yml"
+- import_tasks: roles/software_install/tasks/entry.yml

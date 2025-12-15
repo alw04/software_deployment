@@ -1,11 +1,10 @@
 ---
 name: "tmux"
 tmux_steps:
-  - download_software
-  - extract_software
-  - build_software
+  - download
+  - extract
+  - build
 tmux_default_version: "3.3a"
-tmux_version: "{{ tmux_default_version }}"
 tmux_description: "A terminal multiplexer that enables a number of terminals to be accessed and controlled from a single terminal"
 tmux_website: "http://tmux.org"
 tmux_testing_cmd: "tmux --help"

@@ -1,14 +1,16 @@
 ---
 - block:
-  - name: "Create virtualenv for {{ name }}"
+  - name: "Create virtualenv for {{ name }}/{{ vars[name ~ '_version'] }}"
     vars:
       python_major: "{{ python_version.split('.')[0] }}"
-    command: "{{ python_install_path }}/bin/python{{ python_major }} -m venv {{ vars.get(name ~ '_install_path') }}"
+    command: "{{ python_install_path }}/bin/python{{ python_major }} -m venv {{ vars[name ~ '_install_path'] }}"
+    # args:
+    #   creates: "{{ vars[name ~ '_install_path'] }}/bin/activate"
 
-  - name: "Install {{ name }} into virtualenv"
+  - name: "Install {{ name }}/{{ vars[name ~ '_version'] }} into virtualenv"
     pip:
-      executable: "{{ vars.get(name ~ '_install_path') }}/bin/pip"
+      executable: "{{ vars[name ~ '_install_path'] }}/bin/pip"
       name: "{{ name }}"
-      state: "{{ 'latest' if vars.get(name ~ '_version') == 'latest' else 'present' }}"
-      version: "{{ vars.get(name ~ '_version') if vars.get(name ~ '_version') not in ['latest',''] else omit }}"
-  when: not vars.get(name ~ '_skip')
+      state: "{{ 'latest' if vars[name ~ '_version'] == 'latest' else 'present' }}"
+      version: "{{ vars[name ~ '_version'] if vars[name ~ '_version'] not in ['latest',''] else omit }}"
+  when: not vars[name ~ '_skip']

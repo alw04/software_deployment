@@ -1,2 +1,2 @@
 ---
-- include_tasks: "versions/{{ snakemake_version }}.yml"
+- import_tasks: roles/software_install/tasks/entry.yml

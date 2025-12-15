@@ -1,9 +1,8 @@
 ---
 name: "miniconda"
 miniconda_default_version: "latest"
-miniconda_version: "{{ miniconda_default_version }}"
 miniconda_steps:
-  - download_software
+  - download
   - roles/miniconda/tasks/install_miniconda
 
 miniconda_description: |

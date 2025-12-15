@@ -1,0 +1,25 @@
+---
+- block:
+  - name: "Set download file for {{ name }}/{{ vars[name ~ '_version'] }}"
+    set_fact:
+      "{{ name }}_file": >-
+        {{ lookup('vars', name ~ '_source') | basename }}
+
+  - name: "Set download path for {{ name }}/{{ vars[name ~ '_version'] }}"
+    set_fact:
+      "{{ name }}_download_path": >-
+        {{ ([ vars[name ~ '_base_path'], 'downloads', name, vars[name ~ '_version'] ] | join('/')) }}
+
+  - name: "Create download directory for {{ name }}/{{ vars[name ~ '_version'] }}"
+    file:
+      path: "{{ vars[name ~ '_download_path'] }}"
+      state: directory
+      mode: "0755"
+
+  - name: "Download {{ name }}/{{ vars[name ~ '_version'] }}"
+    get_url:
+      url: "{{ vars[name ~ '_source'] }}"
+      dest: "{{ vars[name ~ '_download_path'] }}/{{ vars[name ~ '_file'] }}"
+      mode: "{{ '0755' if vars[name ~ '_file'] | regex_search('\\.sh$') else '0644' }}"
+      force: no
+  when: not vars[name ~ '_skip']

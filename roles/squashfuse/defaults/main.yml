@@ -1,11 +1,10 @@
 ---
 name: "squashfuse"
 squashfuse_steps:
-  - download_software
-  - extract_software
-  - build_software
+  - download
+  - extract
+  - build
 squashfuse_default_version: "0.5.2"
-squashfuse_version: "{{ squashfuse_default_version }}"
 squashfuse_build_env:
   PKG_CONFIG_PATH: "{{ fuse_install_path }}/lib64/pkgconfig"
 

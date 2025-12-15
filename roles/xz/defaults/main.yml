@@ -1,11 +1,10 @@
 ---
 name: "xz"
 xz_steps:
-  - download_software
-  - extract_software
-  - build_software
+  - download
+  - extract
+  - build
 xz_default_version: "5.4.1"
-xz_version: "{{ xz_default_version }}"
 
 xz_description: |
   xz is a general-purpose, command line data compression utility, similar to gzip and bzip2.

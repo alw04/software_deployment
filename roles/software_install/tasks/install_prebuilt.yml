@@ -1,8 +1,16 @@
 ---
-- name: "Copy {{ name }} files from build directory"
-  copy:
-    src: "{{ vars.get(name ~ '_build_path') }}/"
-    dest: "{{ vars.get(name ~ '_install_path') }}/"
-    mode: "0755"
-    remote_src: true
-  when: not vars.get(name ~ '_skip')
+# - name: "Copy {{ name }}/{{ vars[name ~ '_version'] }} files from build directory"
+#   copy:
+#     src: "{{ vars[name ~ '_build_path'] }}/"
+#     dest: "{{ vars[name ~ '_install_path'] }}/"
+#     mode: "0755"
+#     remote_src: true
+#   when: not vars[name ~ '_skip']
+
+# Using rsync
+- name: "Sync {{ name }}/{{ vars[name ~ '_version'] }} files from build directory"
+  ansible.posix.synchronize:
+    src: "{{ vars[name ~ '_build_path'] }}/"
+    dest: "{{ vars[name ~ '_install_path'] }}/"
+    recursive: true
+  when: not vars[name ~ '_skip']

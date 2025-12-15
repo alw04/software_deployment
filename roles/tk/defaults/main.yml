@@ -1,11 +1,10 @@
 ---
 name: "tk"
 tk_steps:
-  - download_software
-  - extract_software
-  - build_software
+  - download
+  - extract
+  - build
 tk_default_version: "8.6.13"
-tk_version: "{{ tk_default_version }}"
 tk_build_dir: "{{ tk_build_path }}/tk{{ tk_version }}/unix"
 tk_build_configure_flags: "--enable-threads --with-tcl={{ tcl_install_path }}/lib"
 

@@ -1,0 +1,2 @@
+---
+- include_tasks: "{{ role_path }}/tasks/versions/{{ vars.get(name ~ '_version', vars.get(name ~ '_default_version')) }}.yml"

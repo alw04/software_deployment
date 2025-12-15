@@ -1,0 +1,5 @@
+---
+- include_role:
+    name: software_install
+  vars:
+    gmp_source: "https://gmplib.org/download/gmp/gmp-6.2.1.tar.xz"

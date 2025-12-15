@@ -23,7 +23,7 @@ modulefile_template({
   website = "{{ vars.get(name ~ '_website') }}",
   {% endif -%}
   {% if vars.get(name ~ '_source') %}
-  source = "{{ lookup('vars', name ~ '_source') }}",
+  source = "{{ vars.get(name ~ '_source') }}",
   {% endif -%}
   {% if vars.get(name ~ '_depends_on') %}
   required_modules = {
@@ -34,14 +34,14 @@ modulefile_template({
   {% endif -%}
   {% if vars.get(name ~ '_prepend_paths') %}
   prepend_paths = {
-    {% for key, value in vars.get(name ~ '_prepend_path').items() %}
+    {% for key, value in vars.get(name ~ '_prepend_paths').items() %}
     {{ key }} = "{{ value }}"{% if not loop.last %},{% endif -%}
     {% endfor -%}
   },
   {% endif -%}
   {% if vars.get(name ~ '_env_vars') %}
   env_vars = {
-    {% for key, value in vars.get(name ~ '_env_var').items() %}
+    {% for key, value in vars.get(name ~ '_env_vars').items() %}
     {{ key }} = "{{ value }}"{% if not loop.last %},{% endif -%}
     {% endfor -%}
   },
@@ -56,11 +56,6 @@ modulefile_template({
   {% if vars.get(name ~ '_conflicts') %}
   conflicts = {
     {% for module in vars.get(name ~ '_conflicts') %}
-    "{{ module }}"{% if not loop.last %},{% endif -%}
-    {% endfor -%}
-  },
-  required_modules = {
-    {% for module in depends_on %}
     "{{ module }}"{% if not loop.last %},{% endif -%}
     {% endfor -%}
   },

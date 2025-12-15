@@ -1,11 +1,10 @@
 ---
 name: "sparsehash"
 sparsehash_steps:
-  - download_software
-  - extract_software
-  - build_software
+  - download
+  - extract
+  - build
 sparsehash_default_version: "2.0.4"
-sparsehash_version: "{{ sparsehash_default_version }}"
 
 sparsehash_description: "sparsehash is an extremely memory-efficient hash map implementation."
 sparsehash_website: "https://goog-sparsehash.sourceforge.net"

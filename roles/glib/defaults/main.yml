@@ -1,11 +1,10 @@
 ---
 name: "glib"
 glib_steps:
-  - download_software
-  - extract_software
-  - build_software
+  - download
+  - extract
+  - build
 glib_default_version: "2.87.0"
-glib_version: "{{ glib_default_version }}"
 glib_build_system: "meson"
 glib_build_env:
   PKG_CONFIG_PATH: "{{ pcre2_install_path }}/lib/pkgconfig"

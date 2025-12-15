@@ -1,11 +1,10 @@
 ---
 name: "swig"
 swig_steps:
-  - download_software
-  - extract_software
-  - build_software
+  - download
+  - extract
+  - build
 swig_default_version: "4.1.1"
-swig_version: "{{ swig_default_version }}"
 swig_build_env:
   PATH: "{{ pcre2_install_path }}/bin:{{ ansible_env.PATH }}"
 

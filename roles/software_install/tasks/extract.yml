@@ -1,0 +1,30 @@
+---
+- block:
+  - name: "Set build path for {{ name }}/{{ vars[name ~ '_version'] }}"
+    set_fact:
+      "{{ name }}_build_path": >-
+        {{ ([ vars[name ~ '_base_path'], 'builds', name, vars[name ~ '_version'] ] | join('/')) }}
+
+  - name: "Create build directory for {{ name }}/{{ vars[name ~ '_version'] }}"
+    file:
+      path: "{{ vars[name ~ '_build_path'] }}"
+      state: directory
+      mode: "0755"
+
+  - name: "Set unarchive options for {{ name }}/{{ vars[name ~ '_version'] }}"
+    set_fact:
+      "{{ name }}_archive_opts": >-
+        {{
+          (["--strip-components=" ~ vars.get(name ~ "_extract_strip_components", 1)]
+          if (vars[name ~ "_file"] | lower | regex_search(".*\.(tar|tar\.gz|tgz|tar\.bz2|tbz2|tar\.xz|txz)$"))
+          else [])
+        }}
+
+  - name: "Extract {{ name }}/{{ vars[name ~ '_version'] }} to build directory"
+    unarchive:
+      src: "{{ vars[name ~ '_download_path'] }}/{{ vars[name ~ '_file'] }}"
+      dest: "{{ vars[name ~ '_build_path'] }}"
+      copy: no
+      mode: "0755"
+      extra_opts: "{{ vars[name ~ '_archive_opts'] }}"
+  when: not vars[name ~ '_skip']

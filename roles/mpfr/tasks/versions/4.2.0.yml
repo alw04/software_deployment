@@ -1,0 +1,5 @@
+---
+- include_role:
+    name: software_install
+  vars:
+    mpfr_source: "https://www.mpfr.org/mpfr-4.2.0/mpfr-4.2.0.tar.xz"

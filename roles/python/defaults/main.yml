@@ -1,11 +1,10 @@
 ---
 name: "python"
 python_steps:
-  - download_software
-  - extract_software
-  - build_software
+  - download
+  - extract
+  - build
 python_default_version: "3.9.18"
-python_version: "{{ python_default_version }}"
 python_build_configure_flags: "--with-pydebug --with-ensurepip=install"
 
 python_description: "Python is an interpreted, object-oriented, high-level programming language."

@@ -1,11 +1,10 @@
 ---
 name: "sqlite"
 sqlite_steps:
-  - download_software
-  - extract_software
-  - build_software
+  - download
+  - extract
+  - build
 sqlite_default_version: "3.40.1"
-sqlite_version: "{{ sqlite_default_version }}"
 
 sqlite_description: "sqlite is a C library that provides a lightweight disk-based database that doesn't require a separate server process and allows accessing the database using a nonstandard variant of SQL query language."
 sqlite_website: "https://sqlite.org"

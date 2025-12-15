@@ -1,10 +1,9 @@
 ---
 name: "ninja"
 ninja_steps:
-  - download_software
-  - extract_software
-  - build_software
+  - download
+  - extract
+  - build
 ninja_default_version: "1.11.1"
-ninja_version: "{{ ninja_default_version }}"
 ninja_build_system: "cmake"
 ninja_testing_cmd: "ninja --help"

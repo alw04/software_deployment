@@ -1,11 +1,10 @@
 ---
 name: "udunits"
 udunits_steps:
-  - download_software
-  - extract_software
-  - build_software
+  - download
+  - extract
+  - build
 udunits_default_version: "2.2.28"
-udunits_version: "{{ udunits_default_version }}"
 udunits_build_env:
   PKG_CONFIG_PATH: "{{ expat_install_path }}/lib/pkgconfig"
   CFLAGS: "-I{{ expat_install_path }}/include"

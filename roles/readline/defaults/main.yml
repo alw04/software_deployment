@@ -1,11 +1,10 @@
 ---
 name: "readline"
 readline_default_version: "8.3"
-readline_version: "{{ readline_default_version }}"
 readline_steps:
-  - download_software
-  - extract_software
-  - build_software
+  - download
+  - extract
+  - build
 
 readline_website: "https://tiswww.case.edu/php/chet/readline/rltop.html"
 readline_description: "The GNU Readline library provides a set of functions for use by applications that allow users to edit command lines as they are typed in. Both Emacs and vi editing modes are available. The Readline library includes additional functions to maintain a list of previously-entered command lines, to recall and perhaps reedit those lines, and perform csh-like history expansion on previous commands."

@@ -49,7 +49,7 @@
           No software or software groups were selected.
           To install software, provide one or more software names or software groups, for example:
 
-            ansible-playbook site.yml -e "software=tmux,python_3"
+            ansible-playbook site.yml -e "software=tmux,python"
             ansible-playbook site.yml -e "software_groups=common,sequence_tools"
 
           To rebuild software:

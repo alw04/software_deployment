@@ -1,72 +1,87 @@
 ---
-- name: "Store version for {{ name }}"
+- name: "Store version for {{ name }}/{{ vars.get(name ~ '_version', vars.get(name ~ '_default_version')) }}"
   set_fact:
-    "{{ name }}_version": "{{ vars.get(name ~ '_version') }}"
+    "{{ name }}_version": >-
+      {{ vars.get(name ~ '_version', vars.get(name ~ '_default_version')) }}
 
-- name: "Determine base path for {{ name }}"
+- name: "Determine base path for {{ name }}/{{ vars[name ~ '_version'] }}"
   set_fact:
-    "{{ name }}_base_path": "{{ containers_path if vars.get(name ~ '_container', false) else software_path }}"
+    "{{ name }}_base_path": >-
+      {{ containers_path if vars.get(name ~ '_container', false) else software_path }}
 
-- name: "Determine install path for {{ name }}"
+- name: "Determine install path for {{ name }}/{{ vars[name ~ '_version'] }}"
   set_fact:
     "{{ name }}_install_path": >-
       {{
-        (
-        [ vars.get(name ~ '_base_path'), 'apps', name ] + ([ vars.get(name ~ '_version') ] if vars.get(name ~ '_version') else [])
-        if not vars.get(name ~ '_container', false)
-        else
-        [ vars.get(name ~ '_base_path'), name ] + ([ vars.get(name ~ '_version') ] if vars.get(name ~ '_version') else [])
-        ) | join('/')
+        [
+          vars[name ~ '_base_path'],
+          ( 'apps' if not vars.get(name ~ '_container', false) else none ),
+          name,
+          vars[name ~ '_version']
+        ]
+        | select('defined')
+        | join('/')
       }}
 
-- name: "Check if {{ name }} is already installed"
+- name: "Check if {{ name }}/{{ vars[name ~ '_version'] }} is already installed"
   find:
-    paths: "{{ vars.get(name ~ '_install_path') }}"
+    paths: "{{ vars[name ~ '_install_path'] }}"
     file_type: any
     recurse: no
   register: found_result
 
-- name: "Store {{ name }}_found"
+- name: "Determine if {{ name }}/{{ vars[name ~ '_version'] }} should be rebuilt"
   set_fact:
-    "{{ name }}_found": "{{ found_result }}"
+    "{{ name }}_force_rebuild": >-
+      {{
+        (force_rebuild | default(false))
+        or
+        (name in (software_rebuild_list | default([])))
+      }}
 
-- name: "Determine if {{ name }} should be rebuilt"
+- name: "Set {{ name }}/{{ vars[name ~ '_version'] }} skip flag"
   set_fact:
-    "{{ name }}_force_rebuild": "{{ force_rebuild | default(false) or (name in software_rebuild_list | default([])) }}"
-
-- name: "Set {{ name }} skip flag"
-  set_fact:
-    "{{ name }}_skip": "{{ ((name ~ '/' ~ (vars.get(name ~ '_version'))) in vars.get('software_done', [])) or (name in vars.get('software_failed', [])) or (vars.get(name ~ '_found').matched > 0 and not vars.get(name ~ '_force_rebuild', false)) }}"
+    "{{ name }}_skip": >-
+      {{
+        ((name ~ '/' ~ vars[name ~ '_version']) in (software_done | default([])))
+        or
+        name in (software_failed | default ([]))
+        or
+        (
+        found_result.matched > 0
+        and
+        not vars[name ~ '_force_rebuild']
+        )
+      }}
 
 - block:
-  - name: "Determine modulefile path for {{ name }}"
+  - name: "Determine modulefile path for {{ name }}/{{ vars[name ~ '_version'] }}"
     set_fact:
-      "{{ name }}_modulefile_path": "{{ ([ vars.get(name ~ '_base_path'), 'modulefiles', name]) | join('/') }}"
+      "{{ name }}_modulefile_path": >-
+        {{ [ vars[name ~ '_base_path'], 'modulefiles', name ] | join('/') }}
 
-  - name: "Set installation directories for {{ name }}"
-    set_fact:
-      "{{ name }}_install_dirs": "{{ [ vars.get(name ~ '_install_path'), vars.get(name ~ '_modulefile_path') ] + vars.get(name ~ '_extra_dirs', []) }}"
-
-  - name: "Create installation directories for {{ name }}"
+  - name: "Create installation directories for {{ name }}/{{ vars[name ~ '_version'] }}"
     file:
       path: "{{ dir }}"
       state: directory
       mode: "0755"
-    loop: "{{ vars.get(name ~ '_install_dirs', []) }}"
+    loop:
+      - "{{ vars[name ~ '_install_path'] }}"
+      - "{{ vars[name ~ '_modulefile_path'] }}"
     loop_control:
       loop_var: dir
 
-  - name: "Create modulefile for {{ name }}"
+  - name: "Create modulefile for {{ name }}/{{ vars[name ~ '_version'] }}"
     template:
       src: "lmod-template.j2"
-      dest: "{{ vars.get(name ~ '_modulefile_path') }}/{{ vars.get(name ~ '_version', name) }}.lua"
+      dest: "{{ vars[name ~ '_modulefile_path'] }}/{{ vars[name ~ '_version'] }}.lua"
       mode: "0644"
 
-  - name: "Set default modulefile for {{ name }}"
+  - name: "Set default modulefile for {{ name }}/{{ vars[name ~ '_version'] }}"
     file:
-      src: "{{ vars.get(name ~ '_version') }}.lua"
-      dest: "{{ vars.get(name ~ '_modulefile_path') }}/default.lua"
+      src: "{{ vars[name ~ '_version'] }}.lua"
+      dest: "{{ vars[name ~ '_modulefile_path'] }}/default.lua"
       state: link
       force: yes
-    when: (vars.get(name ~ '_version') == vars.get(name ~ '_default_version')) and (vars.get(name ~ '_default_version') is defined)
-  when: not vars.get(name ~ '_skip')
+    when: vars[name ~ '_version'] == vars.get(name ~ '_default_version')
+  when: not vars[name ~ '_skip']

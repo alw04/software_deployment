@@ -3,31 +3,30 @@
     - name: "Run role for {{ software_name }}"
       include_role:
         name: "{{ software_name }}"
+
   rescue:
     - name: "Track failure for {{ software_name }}"
       set_fact:
         software_failed: >-
-          {{
-            software_failed + [software_name ~ '/' ~ vars.get(software_name ~ '_version')
-            if vars.get(software_name ~ '_version') is defined
-            else software_name] | unique
-          }}
+          {{ (software_failed + [software_name ~ '/' ~ vars.get(software_name ~ '_version', 'unknown')]) | unique }}
+
   always:
     - name: "Track status for {{ software_name }}"
       set_fact:
         software_done: >-
           {{
-            software_done + [software_name ~ '/' ~ vars.get(software_name ~ '_version')]
+            software_done + [software_name ~ '/' ~ vars.get(software_name ~ '_version', 'unknown')]
             if not vars.get(software_name ~ '_skip', false)
-            and (software_name ~ '/' ~ vars.get(software_name ~ '_version')) not in software_done
-            and (software_name ~ '/' ~ vars.get(software_name ~ '_version')) not in software_failed
+            and ((software_name ~ '/' ~ vars.get(software_name ~ '_version', 'unknown')) not in software_done)
+            and ((software_name ~ '/' ~ vars.get(software_name ~ '_version', 'unknown')) not in software_failed)
             else software_done
           }}
         software_skipped: >-
           {{
-            software_skipped + [software_name ~ '/' ~ vars.get(software_name ~ '_version')]
+            software_skipped + [software_name ~ '/' ~ vars.get(software_name ~ '_version', 'unknown')]
             if vars.get(software_name ~ '_skip', false)
-            and (software_name ~ '/' ~ vars.get(software_name ~ '_version')) not in software_skipped
-            and (software_name ~ '/' ~ vars.get(software_name ~ '_version')) not in software_failed
+            and ((software_name ~ '/' ~ vars.get(software_name ~ '_version', 'unknown')) not in software_skipped)
+            and ((software_name ~ '/' ~ vars.get(software_name ~ '_version', 'unknown')) not in software_failed)
+            and ((software_name ~ '/' ~ vars.get(software_name ~ '_version', 'unknown')) not in software_done)
             else software_skipped
           }}

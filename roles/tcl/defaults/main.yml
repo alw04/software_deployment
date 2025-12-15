@@ -1,11 +1,10 @@
 ---
 name: "tcl"
 tcl_steps:
-  - download_software
-  - extract_software
-  - build_software
+  - download
+  - extract
+  - build
 tcl_default_version: "8.6.13"
-tcl_version: "{{ tcl_default_version }}"
 tcl_build_dir: "{{ tcl_build_path }}/tcl{{ tcl_version }}/unix"
 tcl_build_configure_flags: "--enable-threads"
 
