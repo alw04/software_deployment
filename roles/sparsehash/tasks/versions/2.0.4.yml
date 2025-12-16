@@ -2,5 +2,4 @@
 - include_role:
     name: software_install
   vars:
-    sparsehash_version: "2.0.4"
     sparsehash_source: "https://github.com/sparsehash/sparsehash/archive/sparsehash-2.0.4.tar.gz"

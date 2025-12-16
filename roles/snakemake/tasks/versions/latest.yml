@@ -4,5 +4,3 @@
 
 - include_role:
     name: software_install
-  vars:
-    snakemake_version: "latest"

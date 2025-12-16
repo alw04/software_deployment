@@ -2,5 +2,4 @@
 - include_role:
     name: software_install
   vars:
-    ruby_version: "3.2.1"
     ruby_source: "https://cache.ruby-lang.org/pub/ruby/3.2/ruby-3.2.1.tar.gz"

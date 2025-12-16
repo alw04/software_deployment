@@ -2,5 +2,4 @@
 - include_role:
     name: software_install
   vars:
-    tcl_version: "8.6.13"
     tcl_source: "http://prdownloads.sourceforge.net/tcl/tcl8613-src.zip"

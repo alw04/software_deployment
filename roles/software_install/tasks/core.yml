@@ -9,7 +9,7 @@
     "{{ name }}_base_path": >-
       {{ containers_path if vars.get(name ~ '_container', false) else software_path }}
 
-- name: "Determine install path for {{ name }}/{{ vars[name ~ '_version'] }}"
+- name: "Determine install paths for {{ name }}/{{ vars[name ~ '_version'] }}"
   set_fact:
     "{{ name }}_install_path": >-
       {{
@@ -22,13 +22,15 @@
         | select('defined')
         | join('/')
       }}
+    "{{ name }}_modulefile_dir_path": >-
+      {{ [ vars[name ~ '_base_path'], 'modulefiles', name ] | join('/') }}
+    "{{ name }}_modulefile_path": >-
+      {{ [ vars[name ~ '_base_path'], 'modulefiles', name, vars[name ~ '_version'] ~ '.lua' ] | join('/') }}
 
 - name: "Check if {{ name }}/{{ vars[name ~ '_version'] }} is already installed"
-  find:
-    paths: "{{ vars[name ~ '_install_path'] }}"
-    file_type: any
-    recurse: no
-  register: found_result
+  stat:
+    path: "{{ vars[name ~ '_modulefile_path'] }}"
+  register: modulefile_stat
 
 - name: "Determine if {{ name }}/{{ vars[name ~ '_version'] }} should be rebuilt"
   set_fact:
@@ -48,18 +50,13 @@
         name in (software_failed | default ([]))
         or
         (
-        found_result.matched > 0
+        modulefile_stat.stat.exists
         and
         not vars[name ~ '_force_rebuild']
         )
       }}
 
 - block:
-  - name: "Determine modulefile path for {{ name }}/{{ vars[name ~ '_version'] }}"
-    set_fact:
-      "{{ name }}_modulefile_path": >-
-        {{ [ vars[name ~ '_base_path'], 'modulefiles', name ] | join('/') }}
-
   - name: "Create installation directories for {{ name }}/{{ vars[name ~ '_version'] }}"
     file:
       path: "{{ dir }}"
@@ -67,21 +64,7 @@
       mode: "0755"
     loop:
       - "{{ vars[name ~ '_install_path'] }}"
-      - "{{ vars[name ~ '_modulefile_path'] }}"
+      - "{{ vars[name ~ '_modulefile_dir_path'] }}"
     loop_control:
       loop_var: dir
-
-  - name: "Create modulefile for {{ name }}/{{ vars[name ~ '_version'] }}"
-    template:
-      src: "lmod-template.j2"
-      dest: "{{ vars[name ~ '_modulefile_path'] }}/{{ vars[name ~ '_version'] }}.lua"
-      mode: "0644"
-
-  - name: "Set default modulefile for {{ name }}/{{ vars[name ~ '_version'] }}"
-    file:
-      src: "{{ vars[name ~ '_version'] }}.lua"
-      dest: "{{ vars[name ~ '_modulefile_path'] }}/default.lua"
-      state: link
-      force: yes
-    when: vars[name ~ '_version'] == vars.get(name ~ '_default_version')
   when: not vars[name ~ '_skip']

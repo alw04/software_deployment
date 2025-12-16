@@ -3,11 +3,13 @@
   include_tasks: core.yml
 
 - block:
-  - name: "Include software steps for {{ name }}/{{ vars[name ~ '_version'] }}"
+  - name: "Include install steps for {{ name }}/{{ vars[name ~ '_version'] }}"
     include_tasks: "{{ task }}.yml"
     loop: "{{ vars.get(name ~ '_steps', []) }}"
     loop_control:
       loop_var: task
+
+  - include_tasks: create_modulefile.yml
 
   - include_tasks: mark_installed.yml
   when: not vars.get(name ~ '_skip')

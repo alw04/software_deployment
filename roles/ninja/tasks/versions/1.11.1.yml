@@ -2,5 +2,4 @@
 - include_role:
     name: software_install
   vars:
-    ninja_version: "1.11.1"
     ninja_source: "https://github.com/ninja-build/ninja/archive/refs/tags/v1.11.1.tar.gz"

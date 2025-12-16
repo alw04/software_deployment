@@ -7,5 +7,4 @@
 - include_role:
     name: software_install
   vars:
-    squashfuse_version: "0.5.2"
     squashfuse_source: "https://github.com/vasi/squashfuse/releases/download/0.5.2/squashfuse-0.5.2.tar.gz"

@@ -6,5 +6,3 @@
 
 - include_role:
     name: software_install
-  vars:
-    virtualenv_version: "latest"

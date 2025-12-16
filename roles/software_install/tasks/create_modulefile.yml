@@ -1,0 +1,16 @@
+---
+- block:
+  - name: "Create modulefile for {{ name }}/{{ vars[name ~ '_version'] }}"
+    template:
+      src: "lmod-template.j2"
+      dest: "{{ vars[name ~ '_modulefile_path'] }}"
+      mode: "0644"
+
+  - name: "Set default modulefile for {{ name }}/{{ vars[name ~ '_version'] }}"
+    file:
+      src: "{{ vars[name ~ '_version'] }}.lua"
+      dest: "{{ vars[name ~ '_modulefile_dir_path'] }}/default.lua"
+      state: link
+      force: yes
+    when: vars[name ~ '_version'] == vars.get(name ~ '_default_version')
+  when: not vars[name ~ '_skip']

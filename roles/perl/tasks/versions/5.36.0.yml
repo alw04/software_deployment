@@ -2,5 +2,4 @@
 - include_role:
     name: software_install
   vars:
-    perl_version: "5.36.0"
     perl_source: "http://www.cpan.org/src/5.0/perl-5.36.0.tar.gz"
