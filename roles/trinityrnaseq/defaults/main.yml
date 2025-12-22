@@ -1,0 +1,11 @@
+---
+name: "trinityrnaseq"
+trinityrnaseq_default_version: "2.15.2"
+trinityrnaseq_container: true
+trinityrnaseq_steps:
+  - pull_container
+
+trinityrnaseq_website: "https://github.com/trinityrnaseq/trinityrnaseq"
+trinityrnaseq_description: "Trinity RNA-Seq de novo transcriptome assembly"
+trinityrnaseq_shell_functions:
+  - "Trinity"

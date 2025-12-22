@@ -15,6 +15,7 @@ return function(M)
         prepend_paths = {},
         env_vars = {},
         required_modules = {},
+        container_image_path = nil,
         shell_functions = {},
         conflicts = {}
     }
@@ -164,15 +165,16 @@ return function(M)
         end
 
         local containers_dir = os.getenv("CONTAINERS") or LmodError("Environment variable CONTAINERS is not set; cannot find container files")
+        local image_path = M.container_image_path or LmodError("container_image_path not set; cannot determine container image")
+
+        if not isFile(image_path) then
+            LmodError("image_path is not a valid file")
+        end
+
         for _, cmd in ipairs(M.shell_functions) do
-            local path = pathJoin(containers_dir, M.name, M.version, cmd .. "-" .. M.version .. ".sif")
-            if isFile(path) then
-                local bash_cmd = ('singularity exec %s %s "$@"'):format(path, cmd)
-                local csh_cmd = ('singularity exec %s %s $*'):format(path, cmd)
-                set_shell_function(cmd, bash_cmd, csh_cmd)
-            elseif mode() == "load" then
-                LmodWarning(("Container file not found for shell function '%s': %s"):format(cmd, path))
-            end
+            local bash_cmd = ('apptainer exec %s %s "$@"'):format(image_path, cmd)
+            local csh_cmd = ('apptainer exec %s %s $*'):format(image_path, cmd)
+            set_shell_function(cmd, bash_cmd, csh_cmd)
         end
     end
 

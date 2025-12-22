@@ -46,6 +46,9 @@ modulefile_template({
     {% endfor -%}
   },
   {% endif -%}
+  {% if vars.get(name ~ '_container_image_path') %}
+  container_image_path = "{{ vars.get(name ~ '_container_image_path') }}",
+  {% endif -%}
   {% if vars.get(name ~ '_shell_functions') %}
   shell_functions = {
     {% for func in vars.get(name ~ '_shell_functions') %}

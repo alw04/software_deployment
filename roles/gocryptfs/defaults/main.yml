@@ -1,0 +1,16 @@
+---
+name: "gocryptfs"
+gocryptfs_default_version: "2.6.1"
+gocryptfs_steps:
+  - download
+  - extract
+  - build
+  - roles/gocryptfs/tasks/copy_gocryptfs_binary
+gocryptfs_build_env:
+  PATH: "{{ go_install_path }}/bin:{{ ansible_env.PATH }}"
+gocryptfs_build_configure_cmd: "/bin/true"
+gocryptfs_build_make_cmd: "./build-without-openssl.bash"
+gocryptfs_build_install_cmd: "/bin/true"
+
+gocryptfs_website: "https://nuetzlich.net/gocryptfs"
+gocryptfs_description: "Encrypted overlay filesystem written in Go"

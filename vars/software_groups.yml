@@ -1,8 +1,10 @@
 ---
 software_groups_mapping:
   common:
+    - apptainer
     - expat
     - fuse
+    - gcc
     - glib
     - go
     - gperf
@@ -29,3 +31,6 @@ software_groups_mapping:
     - wget
     - xz
     - zlib
+
+  sequence_tools:
+    - trinityrnaseq

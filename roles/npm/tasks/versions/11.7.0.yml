@@ -1,0 +1,5 @@
+---
+- include_role:
+    name: software_install
+  vars:
+    npm_source: "https://github.com/npm/cli/archive/refs/tags/v11.7.0.tar.gz"

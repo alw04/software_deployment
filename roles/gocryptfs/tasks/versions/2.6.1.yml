@@ -1,0 +1,10 @@
+---
+- include_role:
+    name: go
+  vars:
+    go_version: "1.20.6"
+
+- include_role:
+    name: software_install
+  vars:
+    gocryptfs_source: "https://github.com/rfjakob/gocryptfs/archive/refs/tags/v2.6.1.tar.gz"

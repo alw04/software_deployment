@@ -1,0 +1,12 @@
+---
+- name: "Create bin directory for gocryptfs"
+  file:
+    path: "{{ gocryptfs_install_path }}/bin"
+    state: directory
+    mode: "0755"
+
+- name: "Install gocryptfs binary to install path"
+  copy:
+    src: "{{ gocryptfs_build_path }}/gocryptfs"
+    dest: "{{ gocryptfs_install_path }}/bin/gocryptfs"
+    mode: "0755"

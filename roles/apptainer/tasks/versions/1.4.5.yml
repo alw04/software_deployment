@@ -1,0 +1,20 @@
+---
+- include_role:
+    name: squashfuse
+  vars:
+    squashfuse_version: "0.5.2"
+
+- include_role:
+    name: gocryptfs
+  vars:
+    gocryptfs_version: "2.6.1"
+
+- include_role:
+    name: go
+  vars:
+    go_version: "1.25.5"
+
+- include_role:
+    name: software_install
+  vars:
+    apptainer_source: "https://github.com/apptainer/apptainer/releases/download/v1.4.5/apptainer-1.4.5.tar.gz"

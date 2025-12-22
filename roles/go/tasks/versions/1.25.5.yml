@@ -1,0 +1,5 @@
+---
+- include_role:
+    name: software_install
+  vars:
+    go_source: "https://go.dev/dl/go1.25.5.linux-amd64.tar.gz"

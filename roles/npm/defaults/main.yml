@@ -1,0 +1,10 @@
+---
+name: "npm"
+npm_default_version: "11.7.0"
+npm_steps:
+  - download
+  - extract
+  - install_prebuilt
+
+npm_website: "https://github.com/npm/cli"
+npm_description: "the package manager for JavaScript"

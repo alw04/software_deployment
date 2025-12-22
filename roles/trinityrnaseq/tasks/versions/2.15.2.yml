@@ -1,0 +1,5 @@
+---
+- include_role:
+    name: software_install
+  vars:
+    trinityrnaseq_source: "docker://trinityrnaseq/trinityrnaseq:2.15.2"

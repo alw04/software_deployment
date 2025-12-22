@@ -1,0 +1,24 @@
+---
+name: "apptainer"
+apptainer_default_version: "1.4.5"
+apptainer_steps:
+  - download
+  - extract
+  - build
+apptainer_build_env:
+  PATH: "{{ go_install_path }}/bin:{{ ansible_env.PATH }}"
+apptainer_build_configure_cmd: >-
+  ./mconfig --prefix={{ apptainer_install_path }}
+  --localstatedir=/var
+  --sysconfdir={{ apptainer_install_path }}/etc
+  --with-suid
+apptainer_build_make_cmd: "make -C ./builddir"
+apptainer_build_install_cmd: "make -C ./builddir install"
+
+apptainer_website: "https://apptainer.org"
+apptainer_description: "Apptainer (formerly Singularity) simplifies the creation and execution of containers, ensuring software components are encapsulated for portability and reproducibility."
+apptainer_env_vars:
+  CONTAINERS: "/reference/containers"
+apptainer_depends_on:
+  - squashfuse
+  - gocryptfs

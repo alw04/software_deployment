@@ -1,0 +1,15 @@
+---
+- block:
+  - name: "Set container image path for {{ name }}/{{ vars[name ~ '_version'] }}"
+    set_fact:
+      "{{ name }}_container_image_path": >-
+        {{ ([ vars[name ~ '_install_path'], (name ~ '-' ~ vars[name ~ '_version'] ~ '.sif') ] | join('/')) }}
+
+  - name: "Pull apptainer container for {{ name }}/{{ vars[name ~ '_version'] }}"
+    command: >
+      {{ vars.get('apptainer_install_path', 'apptainer') }} pull
+      {{ vars[name ~ '_container_image_path'] }}
+      {{ vars[name ~ '_source'] }}
+    args:
+      creates: "{{ vars[name ~ '_container_image_path'] }}"
+  when: not vars[name ~ '_skip']

@@ -11,7 +11,7 @@
     software_path: "/software/el9"
     containers_path: "/reference/containers"
 
-    lmod_template_path: "/etc/modulefiles/lmod-template.lua"
+    lmod_template_path: "/software/el9/modulefiles/lmod-template.lua"
 
     software: ""
     software_groups: ""

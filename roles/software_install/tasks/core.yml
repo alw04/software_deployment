@@ -15,11 +15,11 @@
       {{
         [
           vars[name ~ '_base_path'],
-          ( 'apps' if not vars.get(name ~ '_container', false) else none ),
+          ( 'apps' if not vars.get(name ~ '_container', false) else '' ),
           name,
           vars[name ~ '_version']
         ]
-        | select('defined')
+        | select('truthy')
         | join('/')
       }}
     "{{ name }}_modulefile_dir_path": >-
