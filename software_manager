@@ -1,0 +1,211 @@
+#!/usr/bin/env python3
+
+import argparse
+import os
+from pathlib import Path
+from subprocess import run
+from typing import List, Optional
+
+
+class SoftwareManager:
+    EXCLUDED = {"software_install"}
+
+    def __init__(self):
+        self.roles = Path(__file__).resolve().parent / "roles"
+
+    # ---------- helpers ----------
+    def _software_path(self, name: str) -> Path:
+        return self.roles / name
+
+    def _defaults_file(self, name: str) -> Path:
+        return self._software_path(name) / "defaults" / "main.yml"
+
+    def _versions_dir(self, name: str) -> Path:
+        return self._software_path(name) / "tasks" / "versions"
+
+    def _version_file(self, name: str, version: str) -> Path:
+        return self._versions_dir(name) / f"{version}.yml"
+
+    def _software_exists(self, name: str) -> bool:
+        return self._software_path(name).is_dir()
+
+    def _get_versions(self, name: str) -> List[str]:
+        versions_dir = self._versions_dir(name)
+        if not versions_dir.is_dir():
+            return []
+        return sorted(v.stem for v in versions_dir.glob("*.yml"))
+
+    def _get_default_version(self, name: str) -> Optional[str]:
+        defaults = self._defaults_file(name)
+        if not defaults.is_file():
+            return None
+        key = f"{name}_default_version"
+        for line in defaults.read_text().splitlines():
+            if line.strip().startswith(f"{key}:"):
+                return line.split(":", 1)[1].strip().strip("'\"")
+        return None
+
+    def _print_versions(self, name: str, versions: List[str], default: Optional[str] = None):
+        if not versions:
+            print(f"No versions found for '{name}'")
+            return
+
+        print("Available versions (default is marked with *):")
+
+        for v in versions:
+            mark = "*" if v == default else " "
+            print(f"{mark} {v}")
+
+    def _open_editor(self, path: Path):
+        editor = os.environ.get("EDITOR", "vim")
+        run([editor, str(path)])
+
+    # ---------- commands ----------
+    def list_software(self):
+        width = 24
+        print(f"{'SOFTWARE':<{width}} DEFAULT")
+        print("-" * (width + 8))
+        for path in sorted(self.roles.iterdir()):
+            if not path.is_dir() or path.name in self.EXCLUDED:
+                continue
+            default = self._get_default_version(path.name) or "-"
+            print(f"{path.name:<{width}} {default}")
+
+    def show(self, name: str):
+        if not self._software_exists(name):
+            print(f"Error: software '{name}' not found")
+            return
+        versions = self._get_versions(name)
+        default = self._get_default_version(name)
+        self._print_versions(name, versions, default)
+
+    def set_default(self, name: str, version: str):
+        if not self._software_exists(name):
+            print(f"Error: software '{name}' not found")
+            return
+        versions = self._get_versions(name)
+        default = self._get_default_version(name)
+
+        if version not in versions:
+            print(f"Error: version '{version}' does not exist for '{name}'")
+            self._print_versions(name, versions, default)
+            return
+
+        defaults = self._defaults_file(name)
+        if not defaults.is_file():
+            print(f"Error: no defaults file for '{name}'")
+            return
+
+        key = f"{name}_default_version"
+        lines = []
+        for line in defaults.read_text().splitlines():
+            if line.strip().startswith(f"{key}:"):
+                lines.append(f'{key}: "{version}"')
+            else:
+                lines.append(line)
+        defaults.write_text("\n".join(lines) + "\n")
+        print(f"Default version for '{name}' set to '{version}'")
+
+    def edit_defaults(self, name: str):
+        if not self._software_exists(name):
+            print(f"Error: software '{name}' not found")
+            return
+        defaults = self._defaults_file(name)
+        if not defaults.is_file():
+            print(f"No defaults file found for '{name}'")
+            return
+        self._open_editor(defaults)
+
+    def edit(self, name: str, version: str):
+        if not self._software_exists(name):
+            print(f"Error: software '{name}' not found")
+            return
+
+        versions = self._get_versions(name)
+        default = self._get_default_version(name)
+
+        if version not in versions:
+            print(f"Error: version '{version}' not found for '{name}'")
+            self._print_versions(name, versions, default)
+            return
+
+        version_file = self._version_file(name, version)
+        self._open_editor(version_file)
+
+    def add(self, name: str, version: str):
+        software = self._software_path(name)
+        versions_dir = self._versions_dir(name)
+        versions_dir.mkdir(parents=True, exist_ok=True)
+        (software / "defaults").mkdir(exist_ok=True)
+        (software / "tasks").mkdir(exist_ok=True)
+
+        version_file = self._version_file(name, version)
+        if version_file.exists():
+            print(f"Error: version '{version}' already exists for '{name}'")
+            return
+
+        defaults = self._defaults_file(name)
+        if not defaults.exists():
+            defaults.write_text(f'---\nname: "{name}"\n{name}_default_version: "{version}"\n')
+
+        tasks_main = software / "tasks" / "main.yml"
+        if not tasks_main.exists():
+            tasks_main.write_text("---\n- include_tasks: roles/software_install/tasks/entry.yml\n")
+
+        version_file.write_text("---\n- include_role:\n    name: software_install\n")
+
+        print(f"Added software '{name}' version '{version}' at: {software}")
+        print(f"Defaults file: {defaults}")
+        print(f"Version file: {version_file}")
+
+        self._open_editor(defaults)
+        self._open_editor(version_file)
+
+
+def parse_args():
+    parser = argparse.ArgumentParser(prog="software-manager", description="Manage software roles and versions")
+    sub = parser.add_subparsers(dest="command", required=True)
+
+    sub.add_parser("list", help="List all software")
+
+    show = sub.add_parser("show", help="Show versions for a software")
+    show.add_argument("software", help="Software name")
+
+    add = sub.add_parser("add", help="Add software or a new version")
+    add.add_argument("software", help="Software name")
+    add.add_argument("version", help="Version to add")
+
+    set_default = sub.add_parser("set-default", help="Set default version")
+    set_default.add_argument("software", help="Software name")
+    set_default.add_argument("version", help="Version to set as default")
+
+    edit = sub.add_parser("edit", help="Edit a software version")
+    edit.add_argument("software", help="Software name")
+    edit.add_argument("version", help="Version to edit")
+
+    edit_defaults = sub.add_parser("edit-defaults", help="Edit defaults file")
+    edit_defaults.add_argument("software", help="Software name")
+
+    return parser.parse_args()
+
+
+def main():
+    args = parse_args()
+    manager = SoftwareManager()
+
+    if args.command == "list":
+        manager.list_software()
+    elif args.command == "show":
+        manager.show(args.software)
+    elif args.command == "add":
+        manager.add(args.software, args.version)
+    elif args.command == "set-default":
+        manager.set_default(args.software, args.version)
+    elif args.command == "edit":
+        manager.edit(args.software, args.version)
+    elif args.command == "edit-defaults":
+        manager.edit_defaults(args.software)
+
+
+if __name__ == "__main__":
+    main()
